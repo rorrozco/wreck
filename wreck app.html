@@ -1,0 +1,1228 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>WRECK</title>
+
+<div id="intro">
+
+    <div class="alerta"></div>
+
+    <div class="logo">
+        <span class="w">W</span>
+        <span class="r">R</span>
+        <span class="e">E</span>
+        <span class="c">C</span>
+        <span class="k">K</span>
+    </div>
+
+</div>
+
+<style>
+
+#intro{
+    position:fixed;
+    inset:0;
+    background:black;
+
+    display:flex;
+    justify-content:center;
+    align-items:center;
+
+    overflow:hidden;
+
+    z-index:99999;
+
+    animation:desaparecer .5s forwards 1.3s;
+}
+
+.alerta{
+    position:absolute;
+    width:100%;
+    height:100%;
+
+    background:
+    radial-gradient(circle,
+    rgba(255,0,0,0.2) 0%,
+    transparent 70%);
+
+    animation:flash 0.12s infinite alternate;
+}
+
+.logo{
+    display:flex;
+    gap:10px;
+
+    font-size:140px;
+    font-family:Impact;
+    font-weight:900;
+    letter-spacing:8px;
+}
+
+.logo span{
+
+    color:#ffd000;
+
+    text-shadow:
+        0 0 10px #ffcc00,
+        0 0 30px #ff4400,
+        0 0 60px red;
+
+    animation:
+        vibrar 0.03s infinite alternate,
+        color 0.2s infinite alternate;
+}
+
+/* ROMPER */
+
+.w{ animation:
+    vibrar 0.03s infinite alternate,
+    color 0.2s infinite alternate,
+    romper 0.7s forwards 0.1s;
+}
+
+.r{ animation:
+    vibrar 0.03s infinite alternate,
+    color 0.2s infinite alternate,
+    romper 0.7s forwards 0.3s;
+}
+
+.e{ animation:
+    vibrar 0.03s infinite alternate,
+    color 0.2s infinite alternate,
+    romper 0.7s forwards 0.5s;
+}
+
+.c{ animation:
+    vibrar 0.03s infinite alternate,
+    color 0.2s infinite alternate,
+    romper 0.7s forwards 0.7s;
+}
+
+.k{ animation:
+    vibrar 0.03s infinite alternate,
+    color 0.2s infinite alternate,
+    romper 0.7s forwards 0.9s;
+}
+
+@keyframes vibrar{
+
+    from{
+        transform:translate(-2px,2px);
+    }
+
+    to{
+        transform:translate(2px,-2px);
+    }
+}
+
+@keyframes color{
+
+    from{
+        color:#ffe600;
+    }
+
+    to{
+        color:#ff0000;
+    }
+}
+
+@keyframes romper{
+
+    0%{
+        opacity:1;
+        transform:scale(1);
+    }
+
+    100%{
+        opacity:0;
+
+        transform:
+        translateY(200px)
+        rotate(25deg)
+        scale(0.1);
+
+        filter:blur(10px);
+    }
+}
+
+@keyframes flash{
+
+    from{
+        opacity:0.1;
+    }
+
+    to{
+        opacity:0.8;
+    }
+}
+
+@keyframes desaparecer{
+
+    to{
+        opacity:0;
+        visibility:hidden;
+    }
+}
+
+</style>
+
+<script>
+
+setTimeout(() => {
+
+    const intro = document.getElementById("intro");
+
+    if(intro){
+
+        intro.remove();
+    }
+
+},1800);
+
+</script>
+
+<style>
+body{
+font-family:Arial, Helvetica, sans-serif;
+background:#20242b;
+color:white;
+text-align:center;
+padding:20px;
+}
+.viewer{
+position:relative;
+display:inline-block;
+}
+.viewer img{
+width:350px;
+height:500px;
+object-fit:cover;
+border-radius:15px;
+}
+
+#randomOrb{
+
+    flex-direction:column;
+
+    line-height:1;
+
+    position:absolute;
+
+    top:15px;
+
+    right:15px;
+
+    width:90px;
+
+    height:90px;
+
+    border-radius:50%;
+
+    display:flex;
+
+    align-items:center;
+
+    justify-content:center;
+
+    font-family:Impact, Haettenschweiler, 'Arial Narrow Bold', sans-serif;
+    
+    font-size:60px;
+
+    font-weight:bold;
+
+    z-index:999;
+
+    transition:0.2s;
+}
+
+.normalOrb{
+
+    background:black;
+
+    color:#00ff66;
+
+    border:3px solid #00ff66;
+
+    box-shadow:0 0 18px #00ff66;
+}
+
+.eventOrb{
+
+    background:#ffd000;
+
+    color:black;
+
+    border:3px solid black;
+
+    box-shadow:0 0 18px #ffd000;
+}
+
+#deck,
+#eventDeck{
+
+display:flex;
+flex-wrap:wrap;
+justify-content:center;
+gap:10px;
+margin-top:15px;
+}
+
+.navBtn{
+    background:#ff6600;
+    color:white;
+    border:none;
+    border-radius:10px;
+    padding:12px 25px;
+    margin:10px;
+    cursor:pointer;
+    font-size:20px;
+}
+
+.cardThumb{
+width:90px;
+height:120px;
+overflow:hidden;
+position:relative;
+}
+.cardThumb img{
+width:100%;
+height:100%;
+object-fit:cover;
+}
+.removeBtn{
+    position:absolute;
+    top:1px;
+    right:1px;
+    background:#ff00ff;
+    width:28px;
+    height:28px;
+    border-radius:50%;
+
+    display:flex;
+    align-items:center;
+    justify-content:center;
+}
+button{
+    padding:10px 20px;
+    border:none;
+    border-radius:8px;
+    cursor:pointer;
+    font-size:16px;
+    margin:5px;
+}
+
+#shuffleBtn{
+    background:#00cccc;
+    color:white;
+}
+
+#saveBtn{
+    background:#990099;
+    color:white;
+}
+
+#exportBtn{
+    background:#cc3300;
+    color:white;
+}
+
+#importBtn{
+    background:#0033cc;
+    color:white;
+}
+
+#toggleMenuBtn{
+    background:#ffff00;
+    color:#000000;
+    margin-top:20px;
+}
+
+.submenu{
+background:#666666;
+padding:15px;
+border-radius:15px;
+margin-top:20px;
+}
+
+.hidden{
+display:none;
+}
+
+
+</style>
+</head>
+
+<body>
+
+<div class="viewer">
+<img id="mainCard" src="">
+
+<div id="randomOrb" class="normalOrb">
+
+<div id="orbNumber"></div>
+
+<div id="orbCubes"
+style="
+display:flex;
+gap:4px;
+margin-top:4px;
+">
+
+</div>
+
+</div>
+
+</div>
+
+    <div class="navButtons">
+        <button id="navBtn" class="navBtn" onclick="previousCard()">⬅ Back</button>
+        <button id="navBtn" class="navBtn" onclick="nextCard()">Next ➡</button>
+</div>
+
+<button id="toggleMenuBtn" type="button" onclick="toggleMenu()">⚙ Manage Cards</button>
+
+<div class="submenu hidden" id="submenu">
+
+<label>
+<button id="shuffleBtn" onclick="shuffleDeck()">🔀 Shuffle</button>
+
+<input
+type="checkbox"
+id="eventLimit69">
+
+👪 2-3 Players
+</label>
+
+<hr>
+
+<h3>Total Cards:
+<span id="cardCount">0</span>
+</h3>
+
+<input type="file" id="fileInput" multiple accept="image/*">
+
+<div id="deck"></div>
+
+<h3>Total Events:
+<span id="eventCount">0</span>
+</h3>
+
+<input
+type="file"
+id="eventInput"
+multiple
+accept="image/*">
+
+<br>
+
+<input
+type="number"
+id="eventChance"
+value="25"
+min="0"
+max="100"
+style="display:none;">
+
+
+<div id="eventDeck" class="deckContainer"></div>
+
+<br>
+
+<hr>
+
+<button id="saveBtn" onclick="quickSave()" style="display:none;">
+<button id="exportBtn" onclick="exportDeck()">📦 Export Deck</button>
+<button id="importBtn">📂 Load Deck</button>
+
+<input type="file" id="importFile" accept=".wreck" style="display:none;">
+
+<label>
+<input type="checkbox" id="orbToggle" checked style="display:none;">
+
+</label>
+
+<input type="number" id="minNumber" value="1" style="display:none;">
+
+<input type="number" id="maxNumber" value="9" style="display:none;">
+
+<script>
+
+let cards = [];
+let currentCardIndex = 0;
+let orbHistory = [];
+let eventCards = [];
+let lastEventIndex = -1;
+
+let lastRandom = null;
+let lastEventRandom = null;
+let availableEventNumbers = [];
+let repeatCount = 0;
+let recentGreenNumbers = [];
+let lastCubeAmount = null;
+
+const fileInput = document.getElementById("fileInput");
+const importFile = document.getElementById("importFile");
+const deck = document.getElementById("deck");
+const cardCount = document.getElementById("cardCount");
+const mainCard = document.getElementById("mainCard");
+const eventInput = document.getElementById("eventInput");
+const eventDeck = document.getElementById("eventDeck");
+const eventCount = document.getElementById("eventCount");
+
+
+fileInput.addEventListener("change", function(event){
+
+const files = event.target.files;
+
+for(let file of files){
+
+const reader = new FileReader();
+
+reader.onload = function(e){
+
+compressImage(file,function(compressed){
+
+cards.push(compressed);
+
+displayDeck();
+
+});
+
+const eventTriggered =
+tryEventCard();
+
+if(!eventTriggered){
+
+showCard(currentCardIndex);
+}
+
+generateRandomOrb();
+}
+
+reader.readAsDataURL(file);
+}
+});
+
+eventInput.addEventListener(
+"change",
+function(event){
+
+const files = event.target.files;
+
+for(let file of files){
+
+compressImage(file,function(compressed){
+
+eventCards.push(compressed);
+
+displayEventDeck();
+
+});
+}
+});
+
+function playBeep(){
+
+const audio =
+new AudioContext();
+
+const osc =
+audio.createOscillator();
+
+const gain =
+audio.createGain();
+
+osc.connect(gain);
+
+gain.connect(audio.destination);
+
+osc.frequency.value = 440;
+
+osc.type = "square";
+
+gain.gain.value = 0.2;
+
+osc.start();
+
+osc.stop(audio.currentTime + 0.1);
+}
+
+function toggleMenu(){
+document.getElementById("submenu")
+.classList.toggle("hidden");
+}
+
+function displayEventDeck(){
+
+eventDeck.innerHTML = "";
+
+eventCards.forEach((card,index)=>{
+
+const div =
+document.createElement("div");
+
+div.className = "cardThumb";
+
+div.innerHTML = `
+
+<button class="removeBtn"
+onclick="removeEventCard(${index})">
+
+X
+
+</button>
+
+<img src="${card}">
+`;
+
+eventDeck.appendChild(div);
+});
+
+eventCount.innerText =
+eventCards.length;
+}
+
+function tryEventCard(){
+
+if(eventCards.length === 0){
+
+return false;
+}
+
+cardsSinceEvent =
+cardsSinceEvent + 1;
+
+console.log(
+"Cards Since Event:",
+cardsSinceEvent
+);
+
+console.log(
+"Next Trigger:",
+nextEventTrigger
+);
+
+if(cardsSinceEvent >= nextEventTrigger){
+
+cardsSinceEvent = 0;
+
+nextEventTrigger =
+randomEventTrigger();
+
+showRandomEvent();
+
+return true;
+}
+
+return false;
+}
+
+let cardsSinceEvent = 0;
+
+let minCardsForEvent = 4;
+
+let maxCardsForEvent = 6;
+
+let nextEventTrigger =
+randomEventTrigger();
+console.log(
+"FIRST EVENT:",
+nextEventTrigger
+);
+
+document.getElementById("eventDeck")
+.classList.add("hidden");
+
+function compressImage(file, callback){
+
+const reader = new FileReader();
+
+reader.onload = function(e){
+
+const img = new Image();
+
+img.onload = function(){
+
+const canvas =
+document.createElement("canvas");
+
+const ctx =
+canvas.getContext("2d");
+
+const maxWidth = 500;
+
+const scale =
+maxWidth / img.width;
+
+canvas.width = maxWidth;
+
+canvas.height =
+img.height * scale;
+
+ctx.drawImage(
+img,
+0,
+0,
+canvas.width,
+canvas.height
+);
+
+const compressed =
+canvas.toDataURL(
+"image/jpeg",
+0.5
+);
+
+callback(compressed);
+};
+
+img.src = e.target.result;
+};
+
+reader.readAsDataURL(file);
+}
+
+function randomEventTrigger(){
+
+return Math.floor(
+Math.random() *
+(maxCardsForEvent - minCardsForEvent + 1)
+) + minCardsForEvent;
+}
+
+function playEventSound(){
+
+const audio =
+new AudioContext();
+
+const osc =
+audio.createOscillator();
+
+const gain =
+audio.createGain();
+
+osc.connect(gain);
+
+gain.connect(audio.destination);
+
+osc.type = "sawtooth";
+
+gain.gain.value = 0.2;
+
+osc.frequency.setValueAtTime(
+220,
+audio.currentTime
+);
+
+
+osc.frequency.linearRampToValueAtTime(
+420,
+audio.currentTime + 0.3
+);
+
+osc.frequency.linearRampToValueAtTime(
+180,
+audio.currentTime + 0.6
+);
+
+osc.frequency.linearRampToValueAtTime(
+420,
+audio.currentTime + 0.9
+);
+
+osc.frequency.linearRampToValueAtTime(
+140,
+audio.currentTime + 1.2
+);
+
+osc.frequency.linearRampToValueAtTime(
+420,
+audio.currentTime + 1.5
+);
+
+osc.start();
+
+osc.stop(audio.currentTime + 1.6);
+}
+
+function showRandomEvent(){
+
+let randomIndex;
+
+do{
+
+randomIndex =
+Math.floor(
+Math.random() * eventCards.length
+);
+
+}while(
+randomIndex === lastEventIndex
+&& eventCards.length > 1
+);
+
+lastEventIndex = randomIndex;
+
+mainCard.src =
+eventCards[randomIndex];
+
+generateEventOrb();
+
+playEventSound();
+}
+
+function refillEventNumbers(){
+
+availableEventNumbers = [];
+
+const forbidden = [
+22,
+33,
+44,
+55,
+66,
+77,
+88
+];
+
+const limit69 =
+document.getElementById("eventLimit69").checked;
+
+const maxEventNumber =
+limit69 ? 69 : 98;
+
+for(let i = 12; i <= maxEventNumber; i++){
+
+if(!forbidden.includes(i)){
+
+availableEventNumbers.push(i);
+}
+}
+}
+
+function displayDeck(){
+
+deck.innerHTML = "";
+
+cards.forEach((card,index)=>{
+
+const div = document.createElement("div");
+
+div.className = "cardThumb";
+
+div.innerHTML = `
+<button class="removeBtn"
+onclick="removeCard(${index})">X</button>
+
+<img src="${card}">
+`;
+
+deck.appendChild(div);
+});
+
+cardCount.innerText = cards.length;
+}
+function removeEventCard(index){
+
+eventCards.splice(index,1);
+
+displayEventDeck();
+}
+
+function showCard(index){
+
+if(cards.length === 0){
+mainCard.src = "";
+return;
+}
+
+mainCard.src = cards[index];
+}
+
+function generateRandomOrb(){
+
+function updateOrbCubes(amount){
+
+const container =
+document.getElementById("orbCubes");
+
+container.innerHTML = "";
+
+for(let i = 0; i < amount; i++){
+
+const cube =
+document.createElement("div");
+
+cube.style.width = "9px";
+
+cube.style.height = "9px";
+
+cube.style.background = "linear-gradient(#00ff66,#008833)";
+
+cube.style.border = "2px solid black";
+
+cube.style.borderRadius = "2px";
+
+cube.style.transform = "translateY(-3px)";
+
+cube.style.boxShadow =
+"0 0 6px #00ff66";
+
+container.appendChild(cube);
+}
+}
+
+const orb =
+document.getElementById("randomOrb");
+
+orb.className = "normalOrb";
+
+const enabled =
+document.getElementById("orbToggle").checked;
+
+if(!enabled){
+
+orb.style.display = "none";
+
+return;
+}
+
+orb.style.display = "flex";
+
+const min =
+parseInt(
+document.getElementById("minNumber").value
+);
+
+const limit69 =
+document.getElementById("eventLimit69").checked;
+
+const max =
+limit69
+? 6
+: parseInt(
+document.getElementById("maxNumber").value
+);
+
+let newNumber;
+
+do{
+
+newNumber =
+Math.floor(
+Math.random() *
+(max - min + 1)
+) + min;
+
+}while(
+recentGreenNumbers.includes(newNumber)
+);
+
+recentGreenNumbers.push(newNumber);
+
+const historyLimit =
+limit69 ? 3 : 5;
+
+if(
+recentGreenNumbers.length > historyLimit
+){
+
+recentGreenNumbers.shift();
+}
+
+lastRandom = newNumber;
+
+document.getElementById("orbNumber")
+.innerText = newNumber;
+
+let mult;
+
+do{
+
+mult =
+Math.floor(Math.random() * 3) + 1;
+
+}while(mult === lastCubeAmount);
+
+lastCubeAmount = mult;
+
+updateOrbCubes(mult);
+}
+
+function generateEventOrb(){
+
+const orb =
+document.getElementById("randomOrb");
+
+orb.className = "eventOrb";
+
+orb.style.display = "flex";
+
+if(availableEventNumbers.length === 0){
+
+refillEventNumbers();
+}
+
+const randomIndex =
+Math.floor(
+Math.random() *
+availableEventNumbers.length
+);
+
+const randomNumber =
+availableEventNumbers[randomIndex];
+
+availableEventNumbers.splice(randomIndex,1);
+
+document.getElementById("orbNumber")
+.innerText = randomNumber;
+
+document.getElementById("orbCubes")
+.innerHTML = "";
+}
+
+document.getElementById("eventLimit69")
+.addEventListener("change", ()=>{
+
+availableEventNumbers = [];
+
+if(
+document.getElementById("eventLimit69")
+.checked
+){
+
+minCardsForEvent = 3;
+
+maxCardsForEvent = 5;
+
+}else{
+
+minCardsForEvent = 4;
+
+maxCardsForEvent = 6;
+}
+
+nextEventTrigger =
+randomEventTrigger();
+
+});
+
+function nextCard(){
+
+playBeep();
+
+if(cards.length === 0) return;
+
+currentCardIndex++;
+
+if(currentCardIndex >= cards.length){
+
+currentCardIndex = 0;
+}
+
+const eventTriggered =
+tryEventCard();
+
+if(eventTriggered){
+
+return;
+}
+
+showCard(currentCardIndex);
+
+generateRandomOrb();
+
+orbHistory[currentCardIndex] = {
+
+number:
+document.getElementById("orbNumber")
+.innerText,
+
+cubes:
+document.getElementById("orbCubes")
+.innerHTML
+
+};
+}
+
+function previousCard(){
+
+if(cards.length === 0) return;
+
+currentCardIndex--;
+
+if(currentCardIndex < 0){
+
+currentCardIndex = cards.length - 1;
+}
+
+showCard(currentCardIndex);
+
+const previousOrb =
+orbHistory[currentCardIndex];
+
+if(previousOrb){
+
+document.getElementById("orbNumber")
+.innerText =
+previousOrb.number;
+
+document.getElementById("orbCubes")
+.innerHTML =
+previousOrb.cubes;
+
+}else{
+
+generateRandomOrb();
+
+orbHistory[currentCardIndex] = {
+
+number:
+document.getElementById("orbNumber")
+.innerText,
+
+cubes:
+document.getElementById("orbCubes")
+.innerHTML
+
+};
+}
+}
+
+function removeCard(index){
+
+cards.splice(index,1);
+
+displayDeck();
+
+showCard(currentCardIndex);
+
+generateRandomOrb();
+}
+
+function shuffleDeck(){
+
+for(let i = cards.length - 1; i > 0; i--){
+
+const j =
+Math.floor(Math.random() * (i + 1));
+
+[cards[i], cards[j]] =
+[cards[j], cards[i]];
+}
+
+for(let i = eventCards.length - 1; i > 0; i--){
+
+const j =
+Math.floor(Math.random() * (i + 1));
+
+[eventCards[i], eventCards[j]] =
+[eventCards[j], eventCards[i]];
+}
+
+currentCardIndex = 0;
+
+displayDeck();
+
+displayEventDeck();
+
+showCard(0);
+
+generateRandomOrb();
+}
+
+function quickSave(){
+
+localStorage.setItem(
+"wreckDeck",
+JSON.stringify(cards));
+
+alert("Deck Saved!");
+}
+
+function exportDeck(){
+
+const deckData = {
+
+cards: cards,
+
+eventCards: eventCards
+
+};
+
+const blob = new Blob(
+
+[JSON.stringify(deckData)],
+
+{type:"application/json"}
+
+);
+
+const link =
+document.createElement("a");
+
+link.href =
+URL.createObjectURL(blob);
+
+link.download =
+"deck.wreck";
+
+link.click();
+}
+
+document.getElementById("importBtn")
+.addEventListener("click", ()=>{
+
+importFile.click();
+});
+
+importFile.addEventListener("change", function(){
+
+const file = importFile.files[0];
+
+if(!file) return;
+
+const reader = new FileReader();
+
+reader.onload = function(e){
+
+try{
+
+const data =
+JSON.parse(e.target.result);
+
+
+cards = data.cards || [];
+
+
+eventCards = data.eventCards || [];
+
+
+currentCardIndex = 0;
+
+
+displayDeck();
+
+displayEventDeck();
+
+
+showCard(0);
+
+
+generateRandomOrb();
+
+}catch{
+
+alert("Invalid Deck File");
+}
+}
+
+reader.readAsText(file);
+});
+
+</script>
+
+</body>
+</html>
