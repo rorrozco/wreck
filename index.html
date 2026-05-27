@@ -217,6 +217,59 @@ border-radius:15px;
 margin-right:20px;
 }
 
+#memoryBanner{
+
+position:absolute;
+
+top:150px;
+
+left:50%;
+
+transform:translateX(-50%);
+
+background:#aa0000;
+
+color:white;
+
+padding:8px 18px;
+
+border-radius:12px;
+
+font-weight:bold;
+
+font-size:22px;
+
+font-family:Impact;
+
+letter-spacing:2px;
+
+box-shadow:
+0 0 15px red;
+
+z-index:9999;
+
+display:none;
+
+animation:pulseMemory 0.8s infinite alternate;
+}
+
+@keyframes pulseMemory{
+
+from{
+
+transform:
+translateX(-50%)
+scale(1);
+}
+
+to{
+
+transform:
+translateX(-50%)
+scale(1.05);
+}
+}
+
 #randomOrb{
 
     flex-direction:column;
@@ -416,6 +469,13 @@ text-shadow:
 <body>
 
 <div class="viewer">
+
+<div id="memoryBanner">
+
+MEMORY HISTORY
+
+</div>
+
 <div id="emptyText">
 
 WRECK
@@ -453,7 +513,7 @@ onclick="previousCard()">
 id="nextBtn"
 class="navBtn"
 onclick="nextCard()">
-Next ➡
+▶ START
 </button>
 
 </div>
@@ -463,7 +523,7 @@ Next ➡
 <div class="submenu hidden" id="submenu">
 
 <label>
-<button id="shuffleBtn" onclick="shuffleDeck()">🔀 Start & Shuffle</button>
+<button id="shuffleBtn" onclick="shuffleDeck()">🔁 Restart</button>
 </label>
 
 <br><br>
@@ -562,6 +622,9 @@ let protectedCards = [];
 let globalAudio = null;
 let audioReady = false;
 let firstNext = true;
+let cardHistory = [];
+let historyIndex = -1;
+let lastWasEvent = false;
 
 const fileInput = document.getElementById("fileInput");
 const importFile = document.getElementById("importFile");
@@ -777,8 +840,7 @@ if(eventCards.length === 0){
 return false;
 }
 
-cardsSinceEvent =
-cardsSinceEvent + 1;
+cardsSinceEvent++;
 
 console.log(
 "Cards Since Event:",
@@ -790,6 +852,15 @@ console.log(
 nextEventTrigger
 );
 
+/* EVITAR DOS EVENTOS SEGUIDOS */
+
+if(lastWasEvent){
+
+lastWasEvent = false;
+
+return false;
+}
+
 if(cardsSinceEvent >= nextEventTrigger){
 
 cardsSinceEvent = 0;
@@ -797,7 +868,58 @@ cardsSinceEvent = 0;
 nextEventTrigger =
 randomEventTrigger();
 
-showRandomEvent();
+lastWasEvent = true;
+
+/* ESCOGER EVENTO */
+
+let randomIndex;
+
+do{
+
+randomIndex =
+Math.floor(
+Math.random() * eventCards.length
+);
+
+}while(
+randomIndex === lastEventIndex
+&& eventCards.length > 1
+);
+
+lastEventIndex = randomIndex;
+
+mainCard.src =
+eventCards[randomIndex];
+
+generateEventOrb();
+
+playEventSound();
+
+/* GUARDAR EN HISTORIAL */
+
+const saveData = {
+
+cardIndex: -1,
+
+isEvent: true,
+
+cardSrc: mainCard.src,
+
+orbNumber:
+document.getElementById("orbNumber")
+.innerText,
+
+cubes:
+document.getElementById("orbCubes")
+.innerHTML,
+
+orbClass: "eventOrb"
+};
+
+cardHistory.push(saveData);
+
+historyIndex =
+cardHistory.length - 1;
 
 return true;
 }
@@ -1213,7 +1335,6 @@ function nextCard(){
 if(cards.length === 0){
 
 return;
-
 }
 
 console.log(firstNext);
@@ -1225,10 +1346,51 @@ shuffleDeck();
 return;
 }
 
+/* SI YA EXISTE HISTORIAL ADELANTE */
+if(historyIndex < cardHistory.length - 1){
+
+historyIndex++;
+
+document.getElementById(
+"memoryBanner"
+).style.display = "block";
+
+
+const saved =
+cardHistory[historyIndex];
+
+currentCardIndex =
+saved.cardIndex;
+
+if(saved.isEvent){
+
+mainCard.src = saved.cardSrc;
+
+}else{
+
+showCard(currentCardIndex);
+}
+
+const orb =
+document.getElementById("randomOrb");
+
+orb.classList.remove(
+"normalOrb",
+"eventOrb"
+);
+
+orb.classList.add(saved.orbClass);
+
+document.getElementById("orbNumber")
+.innerText = saved.orbNumber;
+
+document.getElementById("orbCubes")
+.innerHTML = saved.cubes;
+
+return;
+}
 
 playBeep();
-
-if(cards.length === 0) return;
 
 const eventTriggered =
 tryEventCard();
@@ -1267,61 +1429,97 @@ showCard(currentCardIndex);
 
 generateRandomOrb();
 
-orbHistory[currentCardIndex] = {
+document.getElementById(
+"memoryBanner"
+).style.display = "none";
 
-number:
+/* GUARDAR HISTORIAL */
+
+const saveData = {
+
+cardIndex: currentCardIndex,
+
+isEvent: false,
+
+cardSrc: mainCard.src,
+
+orbNumber:
 document.getElementById("orbNumber")
 .innerText,
 
 cubes:
 document.getElementById("orbCubes")
-.innerHTML
+.innerHTML,
 
+orbClass:
+document.getElementById("randomOrb")
+.className
 };
+
+cardHistory.push(saveData);
+
+historyIndex =
+cardHistory.length - 1;
 }
 
 function previousCard(){
 
-if(cards.length === 0) return;
+if(cardHistory.length === 0){
 
-currentCardIndex--;
-
-if(currentCardIndex < 0){
-
-currentCardIndex = cards.length - 1;
+return;
 }
 
-showCard(currentCardIndex);
+historyIndex--;
 
-const previousOrb =
-orbHistory[currentCardIndex];
+if(historyIndex < 0){
 
-if(previousOrb){
+historyIndex = 0;
+}
 
-document.getElementById("orbNumber")
-.innerText =
-previousOrb.number;
+document.getElementById(
+"memoryBanner"
+).style.display = "block";
 
-document.getElementById("orbCubes")
-.innerHTML =
-previousOrb.cubes;
+const saved =
+cardHistory[historyIndex];
+
+currentCardIndex =
+saved.cardIndex;
+
+/* RESTAURAR CARTA */
+
+if(saved.isEvent){
+
+mainCard.src = saved.cardSrc;
 
 }else{
 
-generateRandomOrb();
-
-orbHistory[currentCardIndex] = {
-
-number:
-document.getElementById("orbNumber")
-.innerText,
-
-cubes:
-document.getElementById("orbCubes")
-.innerHTML
-
-};
+showCard(currentCardIndex);
 }
+
+/* RESTAURAR ORB LIMPIA */
+
+const orb =
+document.getElementById("randomOrb");
+
+orb.classList.remove(
+"normalOrb",
+"eventOrb"
+);
+
+orb.classList.add(saved.orbClass);
+
+/* RESTAURAR NUMERO */
+
+document.getElementById("orbNumber")
+.innerText =
+saved.orbNumber;
+
+/* RESTAURAR CUBOS */
+
+document.getElementById("orbCubes")
+.innerHTML =
+saved.cubes;
 }
 
 function removeCard(index){
@@ -1382,17 +1580,17 @@ audio.createGain();
 osc1.type = "sawtooth";
 
 osc1.frequency.setValueAtTime(
-150,
+300,
 audio.currentTime
 );
 
 osc1.frequency.linearRampToValueAtTime(
-400,
+600,
 audio.currentTime + 0.9
 );
 
 gain1.gain.setValueAtTime(
-0.22,
+0.50,
 audio.currentTime
 );
 
@@ -1625,6 +1823,10 @@ eventCards = [...eventCards];
 
 currentCardIndex = 0;
 
+cardHistory = [];
+
+historyIndex = -1;
+
 cardsSinceEvent = 0;
 
 displayDeck();
@@ -1637,7 +1839,40 @@ showCard(0);
 
 generateRandomOrb();
 
+/* GUARDAR PRIMERA CARTA */
+
+cardHistory = [];
+
+const firstSave = {
+
+cardIndex: 0,
+
+isEvent: false,
+
+cardSrc: mainCard.src,
+
+orbNumber:
+document.getElementById("orbNumber")
+.innerText,
+
+cubes:
+document.getElementById("orbCubes")
+.innerHTML,
+
+orbClass:
+document.getElementById("randomOrb")
+.className
+};
+
+cardHistory.push(firstSave);
+
+historyIndex = 0;
+
 firstNext = false;
+
+document.getElementById(
+"nextBtn"
+).innerHTML = "Next ➡";
 
 },100);
 }
