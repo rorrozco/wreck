@@ -389,6 +389,8 @@ translate(-50%,-50%);
 
 font-size:80px;
 
+margin-left:-5px;
+
 font-weight:bold;
 
 color:#000000;
@@ -461,7 +463,7 @@ Next ➡
 <div class="submenu hidden" id="submenu">
 
 <label>
-<button id="shuffleBtn" onclick="shuffleDeck()">🔀 Restart</button>
+<button id="shuffleBtn" onclick="shuffleDeck()">🔀 Start & Shuffle</button>
 </label>
 
 <br><br>
@@ -687,9 +689,22 @@ protectedCards.length;
 
 function removeProtectedCard(index){
 
+const removedCard = protectedCards[index];
+
 protectedCards.splice(index,1);
 
+// borrar también del deck normal
+cards = cards.filter(card => card !== removedCard);
+
 displayProtectedDeck();
+displayDeck();
+
+if(currentCardIndex >= cards.length){
+
+currentCardIndex = 0;
+}
+
+showCard(currentCardIndex);
 }
 
 function playBeep(){
@@ -1311,9 +1326,24 @@ document.getElementById("orbCubes")
 
 function removeCard(index){
 
+const removedCard = cards[index];
+
+// borrar del deck normal
 cards.splice(index,1);
 
+// borrar también de protegidas si existe ahí
+protectedCards =
+protectedCards.filter(
+card => card !== removedCard
+);
+
 displayDeck();
+displayProtectedDeck();
+
+if(currentCardIndex >= cards.length){
+
+currentCardIndex = 0;
+}
 
 showCard(currentCardIndex);
 
