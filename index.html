@@ -731,6 +731,30 @@ START
 <br><br>
 
 <label>
+
+💣 Difficulty:
+
+<select id="difficulty">
+
+<option value="20">
+Easy
+</option>
+
+<option value="40" selected>
+Normal
+</option>
+
+<option value="60">
+Hard
+</option>
+
+</select>
+
+</label>
+
+<br><br>
+
+<label>
 <input
 type="checkbox"
 id="eventLimit69">
@@ -779,21 +803,9 @@ id="eventInput"
 multiple
 accept="image/*">
 
-<br>
-
-<input
-type="number"
-id="eventChance"
-value="25"
-min="0"
-max="100"
-style="display:none;">
-
-
-<div id="eventDeck" class="deckContainer"></div>
+<div id="eventDeck"></div>
 
 <br>
-
 
 <input type="file" id="importFile" accept=".wreck" style="display:none;">
 
@@ -1038,6 +1050,11 @@ eventCards.length;
 
 function tryEventCard(){
 
+console.log(
+"EVENT CHECK",
+cardsSinceEvent
+);
+
 if(eventCards.length === 0){
 
 return false;
@@ -1050,11 +1067,6 @@ console.log(
 cardsSinceEvent
 );
 
-console.log(
-"Next Trigger:",
-nextEventTrigger
-);
-
 /* EVITAR DOS EVENTOS SEGUIDOS */
 
 if(lastWasEvent){
@@ -1064,12 +1076,53 @@ lastWasEvent = false;
 return false;
 }
 
-if(cardsSinceEvent >= nextEventTrigger){
+const chance =
+parseInt(
+document.getElementById(
+"difficulty"
+).value
+);
+
+const limit69 =
+document.getElementById(
+"eventLimit69"
+).checked;
+
+const minCards =
+limit69 ? 3 : 4;
+
+const maxCards =
+limit69 ? 6 : 8;
+
+let triggerEvent = false;
+
+/* NUNCA ANTES DEL MINIMO */
+
+if(cardsSinceEvent >= minCards){
+
+const roll =
+Math.random() * 100;
+
+if(roll < chance){
+
+triggerEvent = true;
+}
+}
+
+/* FORZAR AL MAXIMO */
+
+if(cardsSinceEvent >= maxCards){
+
+triggerEvent = true;
+}
+
+if(triggerEvent){
+
+console.log(
+"EVENT TRIGGERED"
+);
 
 cardsSinceEvent = 0;
-
-nextEventTrigger =
-randomEventTrigger();
 
 lastWasEvent = true;
 
@@ -1132,17 +1185,6 @@ return false;
 
 let cardsSinceEvent = 0;
 
-let minCardsForEvent = 5;
-
-let maxCardsForEvent = 8;
-
-let nextEventTrigger =
-randomEventTrigger();
-console.log(
-"FIRST EVENT:",
-nextEventTrigger
-);
-
 document.getElementById("eventDeck")
 .classList.add("hidden");
 
@@ -1193,14 +1235,6 @@ img.src = e.target.result;
 };
 
 reader.readAsDataURL(file);
-}
-
-function randomEventTrigger(){
-
-return Math.floor(
-Math.random() *
-(maxCardsForEvent - minCardsForEvent + 1)
-) + minCardsForEvent;
 }
 
 function playEventSound(){
@@ -1433,7 +1467,7 @@ document.getElementById("eventLimit69").checked;
 
 const max =
 limit69
-? 6
+? 5
 : parseInt(
 document.getElementById("maxNumber").value
 );
@@ -1535,25 +1569,6 @@ document.getElementById("eventLimit69")
 .addEventListener("change", ()=>{
 
 availableEventNumbers = [];
-
-if(
-document.getElementById("eventLimit69")
-.checked
-){
-
-minCardsForEvent = 4;
-
-maxCardsForEvent = 6;
-
-}else{
-
-minCardsForEvent = 5;
-
-maxCardsForEvent = 8;
-}
-
-nextEventTrigger =
-randomEventTrigger();
 
 });
 
@@ -2172,6 +2187,7 @@ JSON.stringify(cards));
 alert("Deck Saved!");
 }
 
+
 function exportDeck(){
 
 if(cards.length === 0){
@@ -2259,6 +2275,10 @@ document.getElementById(
 );
 
 if(readyOverlay){
+
+readyOverlay.classList.remove(
+"fadeReady"
+);
 
 readyOverlay.style.display =
 "flex";
