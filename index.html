@@ -322,6 +322,8 @@ opacity: 0;
     border:3px solid black;
 
     box-shadow:0 0 18px #ffd000;
+
+    z-index: 1000;
 }
 
 #deck,
@@ -490,7 +492,9 @@ position:relative;
 
 position:absolute;
 
-top:100px;
+margin-top:-10px;
+
+top:110px;
 
 left:50%;
 
@@ -500,7 +504,7 @@ background:black;
 
 border:3px solid #00ff66;
 
-border-radius:12px;
+border-radius:8px;
 
 padding:6px 10px;
 
@@ -515,7 +519,7 @@ align-items:center;
 justify-content:center;
 
 box-shadow:
-0 0 12px #00ff66;
+0 0 8px #00ff66;
 
 transition:0.2s;
 
@@ -538,6 +542,8 @@ margin-bottom:4px;
 
 #orbCubes{
 
+margin-top:1.2px;
+
 display:flex;
 
 gap:5px;
@@ -546,7 +552,6 @@ justify-content:center;
 
 align-items:center;
 
-margin-top:6px;
 }
 
 #emptyText{
@@ -645,8 +650,61 @@ opacity:1;
 }
 }
 
+#eventExplosion{
+
+position: fixed;
+
+width: 50px;
+height: 50px;
+
+border-radius: 50%;
+
+z-index: 999;
+
+background:
+radial-gradient(
+circle,
+rgba(255,255,0,1) 0%,
+rgba(255,180,0,0.9) 40%,
+rgba(255,0,0,0.6) 100%
+);
+
+pointer-events: none;
+
+opacity: 0;
+}
+
+.eventExplosionAnim{
+
+animation:
+eventExplosionAnim 1.2s ease-out;
+}
+
+@keyframes eventExplosionAnim{
+
+0%{
+
+transform:
+translate(-50%,-50%)
+scale(0);
+
+opacity: 1;
+}
+
+100%{
+
+transform:
+translate(-50%,-50%)
+scale(25);
+
+opacity: 0;
+}
+}
+
 </style>
 </head>
+
+<div id="eventExplosion"></div>
 
 <body>
 
@@ -683,8 +741,6 @@ READY!?
 <div id="addBox">
 
 <div id="addLabel">
-
-ADD
 
 </div>
 
@@ -836,6 +892,7 @@ let readyMode = true;
 let cardHistory = [];
 let historyIndex = -1;
 let lastWasEvent = false;
+let nextLocked = false;
 
 const fileInput = document.getElementById("fileInput");
 const importFile = document.getElementById("importFile");
@@ -1147,6 +1204,8 @@ generateEventOrb();
 
 playEventSound();
 
+flashEventExplosion();
+
 /* GUARDAR EN HISTORIAL */
 
 const saveData = {
@@ -1409,9 +1468,9 @@ for(let i = 0; i < amount; i++){
 const cube =
 document.createElement("div");
 
-cube.style.width = "9px";
+cube.style.width = "11px";
 
-cube.style.height = "9px";
+cube.style.height = "11px";
 
 cube.style.background = "linear-gradient(#00ff66,#008833)";
 
@@ -1422,7 +1481,7 @@ cube.style.borderRadius = "2px";
 cube.style.transform = "translateY(-3px)";
 
 cube.style.boxShadow =
-"0 0 6px #00ff66";
+"0 0 7px #00ff66";
 
 container.appendChild(cube);
 }
@@ -1569,6 +1628,17 @@ availableEventNumbers = [];
 });
 
 function nextCard(){
+
+const nextBtn =
+document.getElementById("nextBtn");
+
+nextBtn.disabled = true;
+
+setTimeout(()=>{
+
+nextBtn.disabled = false;
+
+},500);
 
 if(cards.length === 0){
 
@@ -1841,6 +1911,54 @@ document.getElementById("orbCubes")
 saved.cubes;
 }
 
+function flashEventExplosion(){
+
+explodeNow();
+
+setTimeout(()=>{
+
+explodeNow();
+
+},600);
+
+setTimeout(()=>{
+
+explodeNow();
+
+},1200);
+}
+
+function explodeNow(){
+
+const orb =
+document.getElementById(
+"randomOrb"
+);
+
+const explosion =
+document.getElementById(
+"eventExplosion"
+);
+
+const rect =
+orb.getBoundingClientRect();
+
+explosion.style.left =
+(rect.left + rect.width/2) + "px";
+
+explosion.style.top =
+(rect.top + rect.height/2) + "px";
+
+explosion.classList.remove(
+"eventExplosionAnim"
+);
+
+void explosion.offsetWidth;
+
+explosion.classList.add(
+"eventExplosionAnim"
+);
+}
 
 function removeCard(index){
 
