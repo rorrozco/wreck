@@ -208,6 +208,7 @@ overflow-x:hidden;
 .viewer{
 position:relative;
 display:inline-block;
+overflow: hidden;
 }
 .viewer img{
 width:350px;
@@ -311,6 +312,8 @@ opacity: 0;
     border:3px solid #00ff66;
 
     box-shadow:0 0 18px #00ff66;
+
+    z-index:996;
 }
 
 .eventOrb{
@@ -523,6 +526,8 @@ box-shadow:
 
 transition:0.2s;
 
+z-index:966;
+
 }
 
 #addLabel{
@@ -538,6 +543,9 @@ letter-spacing:2px;
 color:#00ff66;
 
 margin-bottom:4px;
+
+z-index:906;
+
 }
 
 #orbCubes{
@@ -552,6 +560,59 @@ justify-content:center;
 
 align-items:center;
 
+z-index:901;
+
+}
+
+#greenPulse{
+
+position:absolute;
+
+width:100px;
+height:100px;
+
+border-radius:100%;
+
+background:
+radial-gradient(
+circle,
+rgba(0,255,0,0.8) 0%,
+rgba(0,255,0,0.4) 50%,
+rgba(0,255,0,0) 100%
+);
+
+opacity:0;
+
+pointer-events:none;
+
+z-index:899;
+}
+
+.greenPulseAnim{
+
+animation:
+greenPulseAnim 1.0s ease-out;
+}
+
+@keyframes greenPulseAnim{
+
+0%{
+
+transform:
+translate(-50%,-50%)
+scale(0);
+
+opacity:1;
+}
+
+100%{
+
+transform:
+translate(-50%,-50%)
+scale(12);
+
+opacity:0;
+}
 }
 
 #emptyText{
@@ -652,12 +713,12 @@ opacity:1;
 
 #eventExplosion{
 
-position: fixed;
+position: absolute;
 
 width: 50px;
 height: 50px;
 
-border-radius: 50%;
+border-radius:100%;
 
 z-index: 999;
 
@@ -704,8 +765,6 @@ opacity: 0;
 </style>
 </head>
 
-<div id="eventExplosion"></div>
-
 <body>
 
 <div class="viewer">
@@ -733,6 +792,10 @@ READY!?
 </div>
 
 <img id="mainCard" src="">
+
+<div id="eventExplosion"></div>
+
+<div id="greenPulse"></div>
 
 <div id="randomOrb" class="normalOrb">
 
@@ -777,7 +840,11 @@ START
 <div class="submenu hidden" id="submenu">
 
 <label>
-<button id="shuffleBtn" onclick="shuffleDeck()">🔁 Restart</button>
+<button
+id="shuffleBtn"
+onclick="shuffleDeck();showReadyScreen();">
+🔁 Restart
+</button>
 </label>
 
 <br><br>
@@ -943,6 +1010,7 @@ showCard(currentCardIndex);
 }
 
 generateRandomOrb();
+
 }
 
 reader.readAsDataURL(file);
@@ -1349,6 +1417,30 @@ osc.start();
 osc.stop(audio.currentTime + 1.6);
 }
 
+function showReadyScreen(){
+
+firstNext = true;
+
+const readyOverlay =
+document.getElementById(
+"readyOverlay"
+);
+
+if(readyOverlay){
+
+readyOverlay.style.display =
+"flex";
+
+readyOverlay.classList.remove(
+"fadeReady"
+);
+}
+
+document.getElementById(
+"nextBtn"
+).innerHTML = "START";
+}
+
 function showRandomEvent(){
 
 let randomIndex;
@@ -1638,7 +1730,7 @@ setTimeout(()=>{
 
 nextBtn.disabled = false;
 
-},500);
+},300);
 
 if(cards.length === 0){
 
@@ -1646,6 +1738,8 @@ return;
 }
 
 if(firstNext){
+
+shuffleDeck();
 
 const readyOverlay =
 document.getElementById(
@@ -1662,6 +1756,12 @@ readyOverlay.classList.add(
 showCard(0);
 
 generateRandomOrb();
+
+setTimeout(()=>{
+
+flashGreenPulse();
+
+},300);
 
 playShuffleSound();
 
@@ -1803,6 +1903,8 @@ showCard(currentCardIndex);
 
 generateRandomOrb();
 
+flashGreenPulse();
+
 document.getElementById(
 "memoryBanner"
 ).style.display = "none";
@@ -1911,6 +2013,48 @@ document.getElementById("orbCubes")
 saved.cubes;
 }
 
+function flashGreenPulse(){
+
+const orb =
+document.getElementById(
+"randomOrb"
+);
+
+if(
+orb.classList.contains(
+"eventOrb"
+)
+){
+
+return;
+}
+
+const pulse =
+document.getElementById(
+"greenPulse"
+);
+
+pulse.style.left =
+orb.offsetLeft +
+orb.offsetWidth/2 +
+"px";
+
+pulse.style.top =
+orb.offsetTop +
+orb.offsetHeight/2 +
+"px";
+
+pulse.classList.remove(
+"greenPulseAnim"
+);
+
+void pulse.offsetWidth;
+
+pulse.classList.add(
+"greenPulseAnim"
+);
+}
+
 function flashEventExplosion(){
 
 explodeNow();
@@ -1930,6 +2074,11 @@ explodeNow();
 
 function explodeNow(){
 
+const viewer =
+document.querySelector(
+".viewer"
+);
+
 const orb =
 document.getElementById(
 "randomOrb"
@@ -1940,14 +2089,19 @@ document.getElementById(
 "eventExplosion"
 );
 
-const rect =
+const orbRect =
 orb.getBoundingClientRect();
 
+const viewerRect =
+viewer.getBoundingClientRect();
+
 explosion.style.left =
-(rect.left + rect.width/2) + "px";
+(orbRect.left - viewerRect.left + orbRect.width/2)
++ "px";
 
 explosion.style.top =
-(rect.top + rect.height/2) + "px";
+(orbRect.top - viewerRect.top + orbRect.height/2)
++ "px";
 
 explosion.classList.remove(
 "eventExplosionAnim"
@@ -2315,26 +2469,6 @@ historyIndex = 0;
 
 /* VOLVER A MODO READY */
 
-firstNext = true;
-
-const readyOverlay =
-document.getElementById(
-"readyOverlay"
-);
-
-if(readyOverlay){
-
-readyOverlay.style.display =
-"flex";
-
-readyOverlay.classList.remove(
-"fadeReady"
-);
-}
-
-document.getElementById(
-"nextBtn"
-).innerHTML = "START";
 },100);
 }
 
