@@ -220,7 +220,7 @@ border-radius:15px;
 
 position:absolute;
 
-top:200px;
+top:373px;
 
 left:50%;
 
@@ -251,23 +251,19 @@ z-index:9999;
 
 display:none;
 
-animation:pulseMemory 0.8s infinite alternate;
+animation:pulseMemory 1.0s infinite alternate;
 }
 
 @keyframes pulseMemory{
 
-from{
+0%,45%{
 
-transform:
-translateX(-50%)
-scale(1);
+opacity: 1;
 }
 
-to{
+50%,100%{
 
-transform:
-translateX(-50%)
-scale(1.05);
+opacity: 0;
 }
 }
 
@@ -1225,7 +1221,7 @@ canvas.height
 const compressed =
 canvas.toDataURL(
 "image/jpeg",
-0.5
+0.7
 );
 
 callback(compressed);
@@ -1581,8 +1577,6 @@ return;
 
 if(firstNext){
 
-shuffleDeck();
-
 const readyOverlay =
 document.getElementById(
 "readyOverlay"
@@ -1595,16 +1589,46 @@ readyOverlay.classList.add(
 );
 }
 
+showCard(0);
+
+generateRandomOrb();
+
+playShuffleSound();
+
+/* GUARDAR PRIMERA CARTA */
+
+cardHistory = [];
+
+const firstSave = {
+
+cardIndex: 0,
+
+isEvent: false,
+
+cardSrc: mainCard.src,
+
+orbNumber:
+document.getElementById("orbNumber")
+.innerText,
+
+cubes:
+document.getElementById("orbCubes")
+.innerHTML,
+
+orbClass:
+document.getElementById("randomOrb")
+.className
+};
+
+cardHistory.push(firstSave);
+
+historyIndex = 0;
+
 firstNext = false;
 
-return;
-}
-
-console.log(firstNext);
-
-if(firstNext){
-
-shuffleDeck();
+document.getElementById(
+"nextBtn"
+).innerHTML = "Next";
 
 return;
 }
@@ -1991,7 +2015,9 @@ return;
 
 }
 
-playShuffleSound();
+document.getElementById(
+"memoryBanner"
+).style.display = "none";
 
 setTimeout(()=>{
 
@@ -2026,7 +2052,7 @@ protectedCards.includes(cards[i])
 ){
 
 for(
-let j = 6;
+let j = protectedLimit;
 j < cards.length;
 j++
 ){
@@ -2169,12 +2195,28 @@ cardHistory.push(firstSave);
 
 historyIndex = 0;
 
-firstNext = false;
+/* VOLVER A MODO READY */
+
+firstNext = true;
+
+const readyOverlay =
+document.getElementById(
+"readyOverlay"
+);
+
+if(readyOverlay){
+
+readyOverlay.style.display =
+"flex";
+
+readyOverlay.classList.remove(
+"fadeReady"
+);
+}
 
 document.getElementById(
 "nextBtn"
-).innerHTML = "Next";
-
+).innerHTML = "START";
 },100);
 }
 
