@@ -56,6 +56,7 @@ inset:0;
 width:100%;
 height:100%;
 
+
 background:black;
 
 z-index:9000;
@@ -896,11 +897,11 @@ onclick="shuffleDeck();showReadyScreen();">
 Easy
 </option>
 
-<option value="40" selected>
+<option value="35" selected>
 Normal
 </option>
 
-<option value="60">
+<option value="50">
 Hard
 </option>
 
@@ -1784,7 +1785,13 @@ setTimeout(()=>{
 
 flashGreenPulse();
 
-},300);
+},550);
+
+setTimeout(()=>{
+
+flashGreenPulse();
+
+},1350);
 
 playShuffleSound();
 
