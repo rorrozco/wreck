@@ -880,7 +880,7 @@ START
 <label>
 <button
 id="shuffleBtn"
-onclick="shuffleDeck();showReadyScreen();">
+onclick="showReadyScreen();">
 🔁 Restart
 </button>
 </label>
@@ -1780,7 +1780,7 @@ setTimeout(()=>{
 
 nextBtn.disabled = false;
 
-},300);
+},200);
 
 if(cards.length === 0){
 
@@ -1929,8 +1929,8 @@ currentCardIndex++;
 
 const protectedLimit =
 document.getElementById("eventLimit69").checked
-? 4
-: 6;
+? 3
+: 5;
 
 if(currentCardIndex < protectedLimit){
 
@@ -2370,8 +2370,8 @@ Math.random() * (i + 1)
 
 const protectedLimit =
 document.getElementById("eventLimit69").checked
-? 4
-: 6;
+? 3
+: 5;
 
 for(let i = 0; i < protectedLimit; i++){
 
@@ -2473,6 +2473,10 @@ Math.random() * (i + 1)
 eventCards = [...eventCards];
 
 }
+
+shuffledEvents = [...eventCards];
+
+currentEventIndex = 0;
 
 currentCardIndex = 0;
 
