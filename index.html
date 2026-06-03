@@ -893,15 +893,15 @@ onclick="shuffleDeck();showReadyScreen();">
 
 <select id="difficulty">
 
-<option value="20">
+<option value="15">
 Easy
 </option>
 
-<option value="35" selected>
+<option value="30" selected>
 Normal
 </option>
 
-<option value="50">
+<option value="45">
 Hard
 </option>
 
@@ -982,6 +982,8 @@ let currentCardIndex = 0;
 let orbHistory = [];
 let eventCards = [];
 let lastEventIndex = -1;
+let shuffledEvents = [];
+let currentEventIndex = 0;
 let soundEnabled = true;
 let lastRandom = null;
 let lastEventRandom = null;
@@ -1273,24 +1275,48 @@ lastWasEvent = true;
 
 /* ESCOGER EVENTO */
 
-let randomIndex;
+if(
+currentEventIndex >=
+shuffledEvents.length
+){
 
-do{
+shuffledEvents =
+[...eventCards];
 
-randomIndex =
+/* REBARAJAR */
+
+for(
+let i = shuffledEvents.length - 1;
+i > 0;
+i--
+){
+
+const j =
 Math.floor(
-Math.random() * eventCards.length
+Math.random() * (i + 1)
 );
 
-}while(
-randomIndex === lastEventIndex
-&& eventCards.length > 1
-);
+[
+shuffledEvents[i],
+shuffledEvents[j]
 
-lastEventIndex = randomIndex;
+] = [
+
+shuffledEvents[j],
+shuffledEvents[i]
+
+];
+}
+
+currentEventIndex = 0;
+}
 
 mainCard.src =
-eventCards[randomIndex];
+shuffledEvents[
+currentEventIndex
+];
+
+currentEventIndex++;
 
 generateEventOrb();
 
