@@ -246,7 +246,7 @@ border-radius:15px;
 
 position:absolute;
 
-top:373px;
+top:372px;
 
 left:50%;
 
@@ -1000,6 +1000,7 @@ let cardHistory = [];
 let historyIndex = -1;
 let lastWasEvent = false;
 let nextLocked = false;
+let normalCount = 0;
 
 const fileInput = document.getElementById("fileInput");
 const importFile = document.getElementById("importFile");
@@ -2408,6 +2409,56 @@ break;
 
 /* EVITAR PROTEGIDAS SEGUIDAS */
 
+let normalCount = 0;
+
+for(
+let i = 0;
+i < cards.length;
+i++
+){
+
+if(
+!protectedCards.includes(cards[i])
+){
+
+normalCount++;
+
+if(normalCount > 2){
+
+for(
+let j = i + 1;
+j < cards.length;
+j++
+){
+
+if(
+protectedCards.includes(cards[j])
+){
+
+[
+cards[i],
+cards[j]
+
+] = [
+
+cards[j],
+cards[i]
+
+];
+
+normalCount = 0;
+
+break;
+}
+}
+}
+
+}else{
+
+normalCount = 0;
+}
+}
+
 for(
 let i = 0;
 i < cards.length - 1;
@@ -2449,8 +2500,6 @@ break;
 }
 }
 
-eventCards = [...eventCards];
-
 /* SHUFFLE EVENTOS */
 
 if(eventCards.length > 1){
@@ -2481,8 +2530,6 @@ currentEventIndex = 0;
 currentCardIndex = 0;
 
 cardHistory = [];
-
-historyIndex = -1;
 
 cardsSinceEvent = 0;
 
