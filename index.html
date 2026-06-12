@@ -1493,6 +1493,14 @@ function refillEventNumbers(){
 availableEventNumbers = [];
 
 const forbidden = [
+20,
+30,
+40,
+50,
+60,
+70,
+80,
+90,
 22,
 33,
 44,
@@ -1900,8 +1908,8 @@ currentCardIndex++;
 
 const protectedLimit =
 document.getElementById("eventLimit69").checked
-? 4
-: 6;
+? 5
+: 7;
 
 if(currentCardIndex < protectedLimit){
 
