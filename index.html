@@ -893,15 +893,15 @@ onclick="showReadyScreen();">
 
 <select id="difficulty">
 
-<option value="15">
+<option value="20">
 Easy
 </option>
 
-<option value="30" selected>
+<option value="35" selected>
 Normal
 </option>
 
-<option value="45">
+<option value="50">
 Hard
 </option>
 
@@ -1217,6 +1217,14 @@ if(eventCards.length === 0){
 return false;
 }
 
+if(
+currentEventIndex >=
+shuffledEvents.length
+){
+
+return false;
+}
+
 cardsSinceEvent++;
 
 /* EVITAR DOS EVENTOS SEGUIDOS */
@@ -1273,44 +1281,6 @@ if(triggerEvent){
 cardsSinceEvent = 0;
 
 lastWasEvent = true;
-
-/* ESCOGER EVENTO */
-
-if(
-currentEventIndex >=
-shuffledEvents.length
-){
-
-shuffledEvents =
-[...eventCards];
-
-/* REBARAJAR */
-
-for(
-let i = shuffledEvents.length - 1;
-i > 0;
-i--
-){
-
-const j =
-Math.floor(
-Math.random() * (i + 1)
-);
-
-[
-shuffledEvents[i],
-shuffledEvents[j]
-
-] = [
-
-shuffledEvents[j],
-shuffledEvents[i]
-
-];
-}
-
-currentEventIndex = 0;
-}
 
 mainCard.src =
 shuffledEvents[
@@ -2534,7 +2504,7 @@ currentCardIndex = 0;
 
 cardHistory = [];
 
-cardsSinceEvent = 0;
+cardsSinceEvent = 1;
 
 displayDeck();
 
