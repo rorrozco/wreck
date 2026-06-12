@@ -1241,7 +1241,7 @@ document.getElementById(
 ).checked;
 
 const minCards =
-limit69 ? 3 : 4;
+limit69 ? 4 : 5;
 
 const maxCards =
 limit69 ? 6 : 8;
@@ -1329,7 +1329,7 @@ flashEventExplosion();
 
 const saveData = {
 
-cardIndex: -1,
+cardIndex: currentCardIndex,
 
 isEvent: true,
 
@@ -1930,8 +1930,8 @@ currentCardIndex++;
 
 const protectedLimit =
 document.getElementById("eventLimit69").checked
-? 3
-: 5;
+? 4
+: 6;
 
 if(currentCardIndex < protectedLimit){
 
@@ -2371,8 +2371,8 @@ Math.random() * (i + 1)
 
 const protectedLimit =
 document.getElementById("eventLimit69").checked
-? 3
-: 5;
+? 4
+: 6;
 
 for(let i = 0; i < protectedLimit; i++){
 
@@ -2423,7 +2423,10 @@ if(
 
 normalCount++;
 
-if(normalCount > 2){
+if(
+normalCount > 2 &&
+i >= protectedLimit
+){
 
 for(
 let j = i + 1;
