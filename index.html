@@ -246,7 +246,7 @@ border-radius:15px;
 
 position:absolute;
 
-top:372px;
+top:364px;
 
 left:50%;
 
@@ -262,7 +262,7 @@ border-radius:12px;
 
 font-weight:bold;
 
-font-size:22px;
+font-size:28px;
 
 font-family:Impact;
 
@@ -271,7 +271,7 @@ margin: left 4px;
 letter-spacing:2px;
 
 box-shadow:
-0 0 15px red;
+0 0 10px red;
 
 z-index:9999;
 
@@ -2513,6 +2513,18 @@ currentCardIndex = 0;
 cardHistory = [];
 
 cardsSinceEvent = 1;
+
+lastRandom = null;
+
+lastEventRandom = null;
+
+availableEventNumbers = [];
+
+repeatCount = 0;
+
+recentGreenNumbers = [];
+
+lastCubeAmount = null;
 
 displayDeck();
 
