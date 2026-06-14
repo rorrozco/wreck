@@ -893,15 +893,15 @@ onclick="showReadyScreen();">
 
 <select id="difficulty">
 
-<option value="25">
+<option value="20">
 Easy
 </option>
 
-<option value="45" selected>
+<option value="40" selected>
 Normal
 </option>
 
-<option value="65">
+<option value="60">
 Hard
 </option>
 
@@ -1441,6 +1441,11 @@ osc.stop(audio.currentTime + 1.6);
 function showReadyScreen(){
 
 firstNext = true;
+
+document.getElementById(
+"memoryBanner"
+).style.display = "none";
+
 
 const readyOverlay =
 document.getElementById(
@@ -2321,10 +2326,6 @@ if(cards.length === 0){
 return;
 
 }
-
-document.getElementById(
-"memoryBanner"
-).style.display = "none";
 
 setTimeout(()=>{
 
