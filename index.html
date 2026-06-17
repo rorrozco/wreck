@@ -893,11 +893,11 @@ onclick="showReadyScreen();">
 
 <select id="difficulty">
 
-<option value="25">
+<option value="15">
 Easy
 </option>
 
-<option value="40" selected>
+<option value="35" selected>
 Normal
 </option>
 
@@ -1001,6 +1001,7 @@ let historyIndex = -1;
 let lastWasEvent = false;
 let nextLocked = false;
 let normalCount = 0;
+let lastEventDistance = null;
 
 const fileInput = document.getElementById("fileInput");
 const importFile = document.getElementById("importFile");
@@ -1252,7 +1253,19 @@ const minCards =
 limit69 ? 4 : 6;
 
 const maxCards =
-limit69 ? 6 : 8;
+limit69 ? 7 : 9;
+
+/* AJUSTAR MAXIMO SI EL ULTIMO EVENTO FUE EN EL MAXIMO */
+
+let effectiveMax = maxCards;
+
+if(
+lastEventDistance === maxCards
+){
+
+effectiveMax--;
+
+}
 
 let triggerEvent = false;
 
@@ -1263,7 +1276,32 @@ if(cardsSinceEvent >= minCards){
 const roll =
 Math.random() * 100;
 
-if(roll < chance){
+let blocked = false;
+
+/* BLOQUEAR MINIMO SEGUIDO */
+
+if(
+cardsSinceEvent === minCards &&
+lastEventDistance === minCards
+){
+
+blocked = true;
+}
+
+/* BLOQUEAR MAXIMO SEGUIDO */
+
+if(
+cardsSinceEvent === maxCards &&
+lastEventDistance === maxCards
+){
+
+blocked = true;
+}
+
+if(
+roll < chance &&
+!blocked
+){
 
 triggerEvent = true;
 }
@@ -1271,12 +1309,15 @@ triggerEvent = true;
 
 /* FORZAR AL MAXIMO */
 
-if(cardsSinceEvent >= maxCards){
+if(cardsSinceEvent >= effectiveMax){
 
 triggerEvent = true;
 }
 
 if(triggerEvent){
+
+lastEventDistance =
+cardsSinceEvent;
 
 cardsSinceEvent = 0;
 
@@ -1913,8 +1954,8 @@ currentCardIndex++;
 
 const protectedLimit =
 document.getElementById("eventLimit69").checked
-? 5
-: 7;
+? 6
+: 8;
 
 if(currentCardIndex < protectedLimit){
 
@@ -2350,8 +2391,8 @@ Math.random() * (i + 1)
 
 const protectedLimit =
 document.getElementById("eventLimit69").checked
-? 5
-: 7;
+? 6
+: 8;
 
 for(let i = 0; i < protectedLimit; i++){
 
@@ -2526,6 +2567,8 @@ repeatCount = 0;
 recentGreenNumbers = [];
 
 lastCubeAmount = null;
+
+lastEventDistance = null;
 
 displayDeck();
 
