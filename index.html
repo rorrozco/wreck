@@ -893,15 +893,15 @@ onclick="showReadyScreen();">
 
 <select id="difficulty">
 
-<option value="15">
+<option value="20">
 Easy
 </option>
 
-<option value="35" selected>
+<option value="40" selected>
 Normal
 </option>
 
-<option value="55">
+<option value="60">
 Hard
 </option>
 
@@ -1002,6 +1002,7 @@ let lastWasEvent = false;
 let nextLocked = false;
 let normalCount = 0;
 let lastEventDistance = null;
+let maxReduction = 1;
 
 const fileInput = document.getElementById("fileInput");
 const importFile = document.getElementById("importFile");
@@ -1257,7 +1258,8 @@ limit69 ? 7 : 9;
 
 /* AJUSTAR MAXIMO SI EL ULTIMO EVENTO FUE EN EL MAXIMO */
 
-let effectiveMax = maxCards;
+let effectiveMax =
+maxCards - maxReduction;
 
 if(
 lastEventDistance === maxCards
@@ -1318,6 +1320,8 @@ if(triggerEvent){
 
 lastEventDistance =
 cardsSinceEvent;
+
+maxReduction = 0;
 
 cardsSinceEvent = 0;
 
@@ -1954,8 +1958,8 @@ currentCardIndex++;
 
 const protectedLimit =
 document.getElementById("eventLimit69").checked
-? 6
-: 8;
+? 5
+: 7;
 
 if(currentCardIndex < protectedLimit){
 
@@ -2391,8 +2395,8 @@ Math.random() * (i + 1)
 
 const protectedLimit =
 document.getElementById("eventLimit69").checked
-? 6
-: 8;
+? 5
+: 7;
 
 for(let i = 0; i < protectedLimit; i++){
 
@@ -2570,6 +2574,8 @@ lastCubeAmount = null;
 
 lastEventDistance = null;
 
+maxReduction = 1;
+
 displayDeck();
 
 displayEventDeck();
@@ -2608,8 +2614,6 @@ document.getElementById("randomOrb")
 cardHistory.push(firstSave);
 
 historyIndex = 0;
-
-/* VOLVER A MODO READY */
 
 },100);
 }
