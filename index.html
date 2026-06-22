@@ -893,15 +893,15 @@ onclick="showReadyScreen();">
 
 <select id="difficulty">
 
-<option value="20">
+<option value="15">
 Easy
 </option>
 
-<option value="40" selected>
+<option value="30" selected>
 Normal
 </option>
 
-<option value="60">
+<option value="45">
 Hard
 </option>
 
@@ -1251,10 +1251,10 @@ document.getElementById(
 ).checked;
 
 const minCards =
-limit69 ? 4 : 6;
+limit69 ? 5 : 7;
 
 const maxCards =
-limit69 ? 7 : 9;
+limit69 ? 9 : 11;
 
 /* AJUSTAR MAXIMO SI EL ULTIMO EVENTO FUE EN EL MAXIMO */
 
@@ -1958,8 +1958,8 @@ currentCardIndex++;
 
 const protectedLimit =
 document.getElementById("eventLimit69").checked
-? 5
-: 7;
+? 6
+: 8;
 
 if(currentCardIndex < protectedLimit){
 
@@ -2395,8 +2395,8 @@ Math.random() * (i + 1)
 
 const protectedLimit =
 document.getElementById("eventLimit69").checked
-? 5
-: 7;
+? 6
+: 8;
 
 for(let i = 0; i < protectedLimit; i++){
 
@@ -2574,7 +2574,7 @@ lastCubeAmount = null;
 
 lastEventDistance = null;
 
-maxReduction = 1;
+maxReduction = 2;
 
 displayDeck();
 
