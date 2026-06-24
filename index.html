@@ -1219,8 +1219,14 @@ if(eventCards.length === 0){
 return false;
 }
 
+const maxEvents =
+document.getElementById("eventLimit69").checked
+? 6
+: 8;
+
 if(
-currentEventIndex >= 8
+currentEventIndex >=
+maxEvents
 ){
 
 return false;
