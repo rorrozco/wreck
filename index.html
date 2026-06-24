@@ -1219,19 +1219,6 @@ if(eventCards.length === 0){
 return false;
 }
 
-const maxEvents =
-document.getElementById("eventLimit69").checked
-? 6
-: 8;
-
-if(
-currentEventIndex >=
-maxEvents
-){
-
-return false;
-}
-
 cardsSinceEvent++;
 
 /* EVITAR DOS EVENTOS SEGUIDOS */
@@ -2691,7 +2678,6 @@ try{
 
 const data =
 JSON.parse(e.target.result);
-
 
 cards = data.cards || [];
 
