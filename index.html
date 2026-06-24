@@ -1219,6 +1219,14 @@ if(eventCards.length === 0){
 return false;
 }
 
+if(
+currentEventIndex >=
+shuffledEvents.length
+){
+
+return false;
+}
+
 cardsSinceEvent++;
 
 /* EVITAR DOS EVENTOS SEGUIDOS */
@@ -1888,7 +1896,6 @@ historyIndex++;
 document.getElementById(
 "memoryBanner"
 ).style.display = "block";
-
 
 const saved =
 cardHistory[historyIndex];
@@ -2619,7 +2626,6 @@ JSON.stringify(cards));
 alert("Deck Saved!");
 }
 
-
 function exportDeck(){
 
 if(cards.length === 0){
@@ -2680,7 +2686,6 @@ const data =
 JSON.parse(e.target.result);
 
 cards = data.cards || [];
-
 
 eventCards = data.eventCards || [];
 
