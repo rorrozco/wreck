@@ -914,9 +914,19 @@ Hard
 <label>
 <input
 type="checkbox"
-id="eventLimit69">
+id="reverseLimit"
+onclick="toggleLimitReverse()">
+🌎 Big Map (1-9)
+</label>
+
+<label style="display:none;">
+<input
+type="checkbox"
+id="eventLimit69"
+checked>
 👪 2-3 Players
 </label>
+
 <label>
 <input
 type="checkbox"
@@ -1098,6 +1108,18 @@ displayProtectedDeck();
 });
 }
 });
+
+function toggleLimitReverse(){
+
+const original =
+document.getElementById("eventLimit69");
+
+const reverse =
+document.getElementById("reverseLimit");
+
+original.checked = !reverse.checked;
+
+}
 
 function displayProtectedDeck(){
 
@@ -1715,7 +1737,7 @@ recentGreenNumbers.includes(newNumber)
 recentGreenNumbers.push(newNumber);
 
 const historyLimit =
-limit69 ? 3 : 5;
+limit69 ? 4 : 6;
 
 if(
 recentGreenNumbers.length > historyLimit
@@ -1957,8 +1979,8 @@ currentCardIndex++;
 
 const protectedLimit =
 document.getElementById("eventLimit69").checked
-? 5
-: 7;
+? 6
+: 8;
 
 if(currentCardIndex < protectedLimit){
 
@@ -2394,8 +2416,8 @@ Math.random() * (i + 1)
 
 const protectedLimit =
 document.getElementById("eventLimit69").checked
-? 5
-: 7;
+? 6
+: 8;
 
 for(let i = 0; i < protectedLimit; i++){
 
@@ -2557,7 +2579,7 @@ currentCardIndex = 0;
 
 cardHistory = [];
 
-cardsSinceEvent = 2;
+cardsSinceEvent = 1;
 
 lastRandom = null;
 
