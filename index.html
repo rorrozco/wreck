@@ -2050,10 +2050,16 @@ cardHistory.length - 1;
 
 function previousCard(){
 
+if(cardHistory.length === 1){
+
+return;
+}
+
 if(cardHistory.length === 0){
 
 return;
 }
+
 
 historyIndex--;
 
