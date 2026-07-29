@@ -1067,6 +1067,10 @@ compressImage(file,function(compressed){
 
 cards.push(compressed);
 
+document.getElementById(
+"nextBtn"
+).textContent = "START";
+
 displayDeck();
 
 });
@@ -1090,6 +1094,7 @@ reader.readAsDataURL(file);
 eventInput.addEventListener(
     
 "change",
+
 function(event){
 
 const files = event.target.files;
@@ -1108,6 +1113,7 @@ displayEventDeck();
 
 protectedInput.addEventListener(
 "change",
+
 function(event){
 
 const files = event.target.files;
@@ -2874,7 +2880,6 @@ reader.readAsText(file);
 });
 
 </script>
-
 
 </body>
 </html>
