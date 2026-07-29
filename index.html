@@ -887,6 +887,12 @@ onclick="showReadyScreen();">
 
 <br><br>
 
+<div id="cardsPlayed">
+🎴 Cards Played: 0
+</div>
+
+<br>
+
 <div id="matchTimer">
 ⌚ Match Time: 00:00:00
 </div>
@@ -944,6 +950,8 @@ checked>
 <br><br>
 
 <hr>
+
+<br>
 
 <button id="exportBtn" onclick="exportDeck()">💾 Save </button>
 <button id="importBtn">📂 Load </button>
@@ -1021,6 +1029,7 @@ let nextLocked = false;
 let normalCount = 0;
 let lastEventDistance = null;
 let maxReduction = 1;
+let cardsPlayed = 0;
 
 const fileInput = document.getElementById("fileInput");
 const importFile = document.getElementById("importFile");
@@ -1362,6 +1371,10 @@ shuffledEvents[
 currentEventIndex
 ];
 
+cardsPlayed++;
+
+updateCardsPlayed();
+
 currentEventIndex++;
 
 generateEventOrb();
@@ -1482,7 +1495,6 @@ osc.frequency.setValueAtTime(
 audio.currentTime
 );
 
-
 osc.frequency.linearRampToValueAtTime(
 420,
 audio.currentTime + 0.3
@@ -1517,6 +1529,10 @@ function showReadyScreen(){
 
 firstNext = true;
 
+cardsPlayed = 0;
+
+updateCardsPlayed();
+
 resetMatchTimer();
 
 if(cards.length > 0){
@@ -1529,7 +1545,6 @@ document.getElementById(
 document.getElementById(
 "memoryBanner"
 ).style.display = "none";
-
 
 const readyOverlay =
 document.getElementById(
@@ -1660,7 +1675,6 @@ if(cards.length === 0){
 
 return false;
 }
-
 
 function updateOrbCubes(amount){
 
@@ -2033,6 +2047,10 @@ generateRandomOrb();
 
 flashGreenPulse();
 
+cardsPlayed++;
+
+updateCardsPlayed();
+
 document.getElementById(
 "memoryBanner"
 ).style.display = "none";
@@ -2077,7 +2095,6 @@ if(cardHistory.length === 0){
 
 return;
 }
-
 
 historyIndex--;
 
@@ -2649,6 +2666,10 @@ eventCards = [...eventCards];
 
 }
 
+cardsPlayed = 0;
+
+updateCardsPlayed();
+
 shuffledEvents = [...eventCards];
 
 currentEventIndex = 0;
@@ -2714,11 +2735,25 @@ document.getElementById("randomOrb")
 
 cardHistory.push(firstSave);
 
+cardsPlayed++;
+
+updateCardsPlayed();
+
 historyIndex = 0;
 
 startMatchTimer();
 
 },100);
+}
+
+function updateCardsPlayed(){
+
+document.getElementById(
+"cardsPlayed"
+).innerHTML =
+"🎴 Cards Played: " +
+cardsPlayed;
+
 }
 
 function quickSave(){
@@ -2804,7 +2839,6 @@ data.protectedCards || [];
 
 currentCardIndex = 0;
 
-
 displayDeck();
 
 displayEventDeck();
@@ -2840,6 +2874,7 @@ reader.readAsText(file);
 });
 
 </script>
+
 
 </body>
 </html>
