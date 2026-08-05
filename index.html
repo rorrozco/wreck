@@ -1138,7 +1138,7 @@ try{
 
 const response = await fetch("deck.json");
 
-const data = await response.json();
+const data = JSON.parse(await response.json());
 
 cards = data.cards || [];
 
