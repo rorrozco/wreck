@@ -1136,7 +1136,7 @@ async function loadDefaultDeck(){
 
 try{
 
-const response = await fetch("deck.json");
+const response = await fetch("deck.wreck");
 
 if(!response.ok){
 
@@ -1188,6 +1188,18 @@ const div =
 document.createElement("div");
 
 div.className = "cardThumb";
+
+div.innerHTML = `
+
+<button class="removeBtn"
+onclick="removeProtectedCard(${index})">
+
+X
+
+</button>
+
+<img src="${card}">
+`;
 
 protectedDeck.appendChild(div);
 });
