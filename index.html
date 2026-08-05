@@ -868,7 +868,7 @@ Back
 id="nextBtn"
 class="navBtn"
 onclick="nextCard()">
-LOAD
+Loading
 </button>
 
 </div>
@@ -951,16 +951,11 @@ checked>
 
 <hr>
 
-<br>
-
-<button id="exportBtn" onclick="exportDeck()">💾 Save </button>
-<button id="importBtn">📂 Load </button>
-
 <h3>Strike Cards:
 <span id="cardCount">0</span>
 </h3>
 
-<input type="file" id="fileInput" multiple accept="image/*">
+<input type="file" id="fileInput" multiple accept="image/*" style="display:none;">
 
 <div id="deck"></div>
 
@@ -972,7 +967,7 @@ checked>
 type="file"
 id="protectedInput"
 multiple
-accept="image/*">
+accept="image/*" style="display:none;">
 
 <div id="protectedDeck"></div>
 
@@ -984,7 +979,7 @@ accept="image/*">
 type="file"
 id="eventInput"
 multiple
-accept="image/*">
+accept="image/*" style="display:none;">
 
 <div id="eventDeck"></div>
 
