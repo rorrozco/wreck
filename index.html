@@ -1136,27 +1136,49 @@ async function loadDefaultDeck(){
 
 try{
 
-const response = await fetch("deck.wreck");
-
-if(!response.ok){
-
-throw new Error("No se encontró deck.wreck");
-
-}
+const response = await fetch("deck.json");
 
 const data = await response.json();
 
 cards = data.cards || [];
+
+if(cards.length > 0){
+
+document.getElementById("nextBtn").textContent = "START";
+
+}
+
 eventCards = data.eventCards || [];
-protectedCards = data.protectedCards || [];
+
+protectedCards =
+data.protectedCards || [];
 
 currentCardIndex = 0;
 
 displayDeck();
+
 displayEventDeck();
+
 displayProtectedDeck();
 
-document.getElementById("nextBtn").textContent = "START";
+showCard(0);
+
+generateRandomOrb();
+
+const readyOverlay =
+document.getElementById(
+"readyOverlay"
+);
+
+if(readyOverlay){
+
+readyOverlay.classList.remove(
+"fadeReady"
+);
+
+readyOverlay.style.display =
+"flex";
+}
 
 }catch(error){
 
