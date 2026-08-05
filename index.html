@@ -1132,6 +1132,40 @@ displayProtectedDeck();
 }
 });
 
+async function loadDefaultDeck(){
+
+try{
+
+const response = await fetch("deck.wreck");
+
+if(!response.ok){
+
+throw new Error("No se encontró deck.wreck");
+
+}
+
+const data = await response.json();
+
+cards = data.cards || [];
+eventCards = data.eventCards || [];
+protectedCards = data.protectedCards || [];
+
+currentCardIndex = 0;
+
+displayDeck();
+displayEventDeck();
+displayProtectedDeck();
+
+document.getElementById("nextBtn").textContent = "START";
+
+}catch(error){
+
+console.error(error);
+
+}
+
+}
+
 function toggleLimitReverse(){
 
 const original =
@@ -2877,6 +2911,12 @@ alert("Invalid Deck File");
 }
 
 reader.readAsText(file);
+});
+
+window.addEventListener("load", function(){
+
+loadDefaultDeck();
+
 });
 
 </script>
