@@ -900,6 +900,16 @@ onclick="showReadyScreen();">
 <br>
 
 <label>
+<input
+type="checkbox"
+id="reverseLimit"
+onclick="toggleLimitReverse()">
+🌎 Big Map (1~9)
+</label>
+
+<br><br>
+
+<label>
 
 💣 Difficulty:
 
@@ -921,15 +931,7 @@ Hard
 
 </label>
 
-<br><br>
-
-<label>
-<input
-type="checkbox"
-id="reverseLimit"
-onclick="toggleLimitReverse()">
-🌎 Big Map (1~9)
-</label>
+<br>
 
 <label style="display:none;">
 <input
@@ -944,7 +946,7 @@ checked>
 🔊 Sound
 </label>
 
-<br><br>
+<br>
 
 <hr>
 
@@ -959,8 +961,8 @@ checked>
 
 <div id="deck"></div>
 
-<h3>Event Cards:
-<span id="protectedCount">0</span>
+<h3>
+<span id="protectedCount" style="display:none;">0</span>
 </h3>
 
 <input
@@ -969,9 +971,9 @@ id="protectedInput"
 multiple
 accept="image/*" style="display:none;">
 
-<div id="protectedDeck"></div>
+<div id="protectedDeck" style="display:none;"></div>
 
-<h3>Building Cards:
+<h3>Alert Cards:
 <span id="eventCount">0</span>
 </h3>
 
