@@ -1351,10 +1351,10 @@ document.getElementById(
 ).checked;
 
 const minCards =
-limit69 ? 6 : 8;
+limit69 ? 8 : 10;
 
 const maxCards =
-limit69 ? 10 : 12;
+limit69 ? 12 : 14;
 
 /* AJUSTAR MAXIMO SI EL ULTIMO EVENTO FUE EN EL MAXIMO */
 
@@ -2076,8 +2076,8 @@ currentCardIndex++;
 
 const protectedLimit =
 document.getElementById("eventLimit69").checked
-? 7
-: 9;
+? 8
+: 10;
 
 if(currentCardIndex < protectedLimit){
 
@@ -2572,8 +2572,8 @@ Math.random() * (i + 1)
 
 const protectedLimit =
 document.getElementById("eventLimit69").checked
-? 7
-: 9;
+? 8
+: 10;
 
 for(let i = 0; i < protectedLimit; i++){
 
@@ -2739,7 +2739,7 @@ currentCardIndex = 0;
 
 cardHistory = [];
 
-cardsSinceEvent = 1;
+cardsSinceEvent = 2;
 
 lastRandom = null;
 
