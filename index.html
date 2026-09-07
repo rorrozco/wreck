@@ -21,6 +21,8 @@ content="yes">
 #intro{
     position:absolute;
     inset:0;
+    width:100%;
+    height:100%;
     background:black;
 
     display:flex;
@@ -787,7 +789,7 @@ opacity: 0;
 
 #gameScale {
 display: inline-block;
-width: 390px;
+width: 350px;
  transform-origin: top center;
 }
 
@@ -1201,7 +1203,7 @@ const game = document.getElementById("gameScale");
 
 if (!game) return;
 
-const baseWidth = 390;
+const baseWidth = 350;
 const baseHeight = 690;
 
 const scaleX = window.innerWidth / baseWidth;
