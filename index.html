@@ -220,15 +220,16 @@ setTimeout(() => {
 </script>
 
 <style>
-body{
-font-family:Arial, Helvetica, sans-serif;
-background:#ff6600;
-color:white;
-text-align:center;
-padding:20px;
-margin:0;
-overflow-x:hidden;
-z-index:100;
+body {
+    font-family: Arial, Helvetica, sans-serif;
+    background: #ff6600;
+    color: white;
+    text-align: center;
+    padding: 20px;
+    margin: 0;
+    overflow-x: hidden;
+    overflow-y: auto;
+    z-index: 100;
 }
 .viewer{
 position:relative;
@@ -784,10 +785,32 @@ opacity: 0;
 }
 }
 
+#gameScale {
+display: inline-block;
+width: 390px;
+ transform-origin: top center;
+}
+
 </style>
 </head>
 
 <body>
+
+<div id="intro">
+
+    <div class="alerta"></div>
+
+    <div class="logo">
+        <span class="w">W</span>
+        <span class="r">R</span>
+        <span class="e">E</span>
+        <span class="c">C</span>
+        <span class="k">K</span>
+    </div>
+
+</div>
+
+<div id="gameScale">
 
 <div class="viewer">
 
@@ -802,20 +825,6 @@ BACK MEMORY
 <div id="emptyText">
 
 WRECK
-
-</div>
-
-<div id="intro">
-
-    <div class="alerta"></div>
-
-    <div class="logo">
-        <span class="w">W</span>
-        <span class="r">R</span>
-        <span class="e">E</span>
-        <span class="c">C</span>
-        <span class="k">K</span>
-    </div>
 
 </div>
 
@@ -846,8 +855,6 @@ READY!?
 </div>
 
 <div id="orbCubes"></div>
-
-</div>
 
 </div>
 
@@ -984,6 +991,8 @@ multiple
 accept="image/*" style="display:none;">
 
 <div id="eventDeck"></div>
+
+</div>
 
 <br>
 
@@ -1186,6 +1195,25 @@ console.error(error);
 }
 
 }
+
+function scaleGame() {
+const game = document.getElementById("gameScale");
+
+if (!game) return;
+
+const baseWidth = 390;
+const baseHeight = 690;
+
+const scaleX = window.innerWidth / baseWidth;
+const scaleY = window.innerHeight / baseHeight;
+
+const scale = Math.min(scaleX, scaleY);
+
+game.style.transform = `scale(${scale})`;
+}
+
+window.addEventListener("resize", scaleGame);
+window.addEventListener("load", scaleGame);
 
 function toggleLimitReverse(){
 
