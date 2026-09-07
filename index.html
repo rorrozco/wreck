@@ -21,8 +21,8 @@ content="yes">
 #intro{
     position:absolute;
     inset:0;
-    width:100%;
-    height:100%;
+    width:100vw;
+    height:100vh;
     background:black;
 
     display:flex;
@@ -790,7 +790,7 @@ opacity: 0;
 #gameScale {
 display: inline-block;
 width: 350px;
- transform-origin: top center;
+transform-origin: top center;
 }
 
 </style>
@@ -873,6 +873,8 @@ onclick="previousCard()">
 Back
 </button>
 
+<button id="toggleMenuBtn" type="button" onclick="toggleMenu()">⚙</button>
+
 <button
 id="nextBtn"
 class="navBtn"
@@ -881,8 +883,6 @@ Loading
 </button>
 
 </div>
-
-<button id="toggleMenuBtn" type="button" onclick="toggleMenu()">⚙ Settings</button>
 
 <div class="submenu hidden" id="submenu">
 
@@ -1204,7 +1204,7 @@ const game = document.getElementById("gameScale");
 if (!game) return;
 
 const baseWidth = 350;
-const baseHeight = 690;
+const baseHeight = 625;
 
 const scaleX = window.innerWidth / baseWidth;
 const scaleY = window.innerHeight / baseHeight;
