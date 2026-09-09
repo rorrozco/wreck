@@ -515,10 +515,12 @@ button{
 }
 
 .submenu{
-background:#666666;
-padding:15px;
-border-radius:15px;
-margin-top:16px;
+    background:#666666;
+    width:350px;
+    box-sizing:border-box;
+    padding:15px;
+    border-radius:15px;
+    margin-top:16px;
 }
 
 .hidden{
@@ -2192,15 +2194,11 @@ cardHistory.length - 1;
 
 function previousCard(){
 
-if(cardHistory.length === 1){
+if(cardsPlayed <= 1){
 
 return;
 }
 
-if(cardHistory.length === 0){
-
-return;
-}
 
 historyIndex--;
 
