@@ -760,16 +760,15 @@ opacity:1;
 
 #eventExplosion{
 
-position: absolute;
+position:absolute;
 
-width: 50px;
-height: 50px;
-margin-left: -70px;
-margin-top: -15px;
+width:50px;
+
+height:50px;
 
 border-radius:100%;
 
-z-index: 999;
+z-index:999;
 
 background:
 radial-gradient(
@@ -779,9 +778,9 @@ rgba(255,180,0,0.9) 40%,
 rgba(255,0,0,0.6) 100%
 );
 
-pointer-events: none;
+pointer-events:none;
 
-opacity: 0;
+opacity:0;
 }
 
 .eventExplosionAnim{
@@ -2339,44 +2338,35 @@ explodeNow();
 
 function explodeNow(){
 
-const viewer =
-document.querySelector(
-".viewer"
-);
+    const orb =
+        document.getElementById(
+            "randomOrb"
+        );
 
-const orb =
-document.getElementById(
-"randomOrb"
-);
+    const explosion =
+        document.getElementById(
+            "eventExplosion"
+        );
 
-const explosion =
-document.getElementById(
-"eventExplosion"
-);
+    explosion.style.left =
+        orb.offsetLeft +
+        orb.offsetWidth/2 +
+        "px";
 
-const orbRect =
-orb.getBoundingClientRect();
+    explosion.style.top =
+        orb.offsetTop +
+        orb.offsetHeight/2 +
+        "px";
 
-const viewerRect =
-viewer.getBoundingClientRect();
+    explosion.classList.remove(
+        "eventExplosionAnim"
+    );
 
-explosion.style.left =
-(orbRect.left - viewerRect.left + orbRect.width/2)
-+ "px";
+    void explosion.offsetWidth;
 
-explosion.style.top =
-(orbRect.top - viewerRect.top + orbRect.height/2)
-+ "px";
-
-explosion.classList.remove(
-"eventExplosionAnim"
-);
-
-void explosion.offsetWidth;
-
-explosion.classList.add(
-"eventExplosionAnim"
-);
+    explosion.classList.add(
+        "eventExplosionAnim"
+    );
 }
 
 function removeCard(index){
