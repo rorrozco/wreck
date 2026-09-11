@@ -243,7 +243,7 @@ border-radius:15px;
 
 position:absolute;
 
-top:364px;
+top:349px;
 
 left:50%;
 
@@ -253,9 +253,9 @@ background:#cc0000;
 
 color:white;
 
-padding:8px 18px;
+padding:25px 110px;
 
-border-radius:12px;
+border-radius:4px;
 
 font-weight:bold;
 
@@ -274,7 +274,7 @@ z-index:9999;
 
 display:none;
 
-animation:pulseMemory 1.0s infinite alternate;
+animation:pulseMemory 1.8s infinite alternate;
 }
 
 @keyframes pulseMemory{
@@ -2069,9 +2069,19 @@ if(historyIndex < cardHistory.length - 1){
 
 historyIndex++;
 
-document.getElementById(
-"memoryBanner"
-).style.display = "block";
+if(historyIndex === cardHistory.length - 1){
+
+    document.getElementById(
+        "memoryBanner"
+    ).style.display = "none";
+
+}else{
+
+    document.getElementById(
+        "memoryBanner"
+    ).style.display = "block";
+
+}
 
 const saved =
 cardHistory[historyIndex];
