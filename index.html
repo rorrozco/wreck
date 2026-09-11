@@ -272,20 +272,23 @@ z-index:900;
 
 display:none;
 
-animation:pulseMemory 1.8s infinite alternate;
+animation:pulseMemory 3.6s ease-in-out infinite;
 }
 
 @keyframes pulseMemory{
 
-0%,45%{
+    0%{
+        opacity:0.25;
+    }
 
-opacity: 1;
-}
+    50%{
+        opacity:1;
+    }
 
-50%,100%{
+    100%{
+        opacity:0.25;
+    }
 
-opacity: 0;
-}
 }
 
 #randomOrb{
