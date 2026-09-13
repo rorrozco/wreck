@@ -627,8 +627,8 @@ border-radius:100%;
 background:
 radial-gradient(
 circle,
-rgba(0,255,0,0.8) 0%,
-rgba(0,255,0,0.4) 50%,
+rgba(0,255,0,0.8) 60%,
+rgba(0,255,0,0.4) 80%,
 rgba(0,255,0,0) 100%
 );
 
@@ -761,27 +761,34 @@ opacity:1;
 
 #eventExplosion{
 
-position:absolute;
+    position:absolute;
 
-width:50px;
+    width:50px;
+    height:50px;
 
-height:50px;
+    border-radius:100%;
 
-border-radius:100%;
+    z-index:999;
 
-z-index:999;
+    background:
+        radial-gradient(
+            circle,
+            rgba(255,255,180,1) 0%,
+            rgba(255,255,0,1) 25%,
+            rgba(255,140,0,1) 50%,
+            rgba(255,0,0,0.95) 75%,
+            rgba(120,0,0,0.9) 100%
+        );
 
-background:
-radial-gradient(
-circle,
-rgba(255,255,0,1) 0%,
-rgba(255,180,0,0.9) 40%,
-rgba(255,0,0,0.6) 100%
-);
+    box-shadow:
+        0 0 8px #ffff00,
+        0 0 18px #ff9900,
+        0 0 35px #ff3300,
+        0 0 55px #ff0000;
 
-pointer-events:none;
+    pointer-events:none;
 
-opacity:0;
+    opacity:0;
 }
 
 .eventExplosionAnim{
@@ -807,7 +814,7 @@ transform:
 translate(-50%,-50%)
 scale(25);
 
-opacity: 0;
+opacity: 0.6;
 }
 }
 
@@ -2618,13 +2625,13 @@ setTimeout(()=>{
 
 explodeNow();
 
-},600);
+},700);
 
 setTimeout(()=>{
 
 explodeNow();
 
-},1200);
+},1400);
 }
 
 function explodeNow(){
