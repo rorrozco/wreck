@@ -2430,8 +2430,22 @@ document.getElementById("orbCubes")
 if(historyIndex === cardHistory.length - 1){
 
     cardMotionStartTimer = setTimeout(()=>{
+
         cardMotionStartTimer = null;
-        cardMotionGlow();
+
+        const saved =
+            cardHistory[historyIndex];
+
+        if(saved.isEvent){
+
+            eventThunderFlash();
+
+        }else{
+
+            cardMotionGlow();
+
+        }
+
     },3000);
 
 }
