@@ -106,8 +106,6 @@ border-radius:15px;
         color 0.2s infinite alternate;
 }
 
-/* ROMPER */
-
 .w{ animation:
     vibrar 0.03s infinite alternate,
     color 0.2s infinite alternate,
@@ -832,9 +830,6 @@ opacity: 0.2;
     z-index:800;
 }
 
-
-/* GLOW GRANDE */
-
 #cardMotionGlow{
     position:absolute;
 
@@ -854,13 +849,11 @@ opacity: 0.2;
         rgba(255,130,0,0) 88%
     );
 
-    filter:blur(18px);
+    filter:blur(24px);
 
     opacity:0;
     pointer-events:none;
 }
-
-/* NÚCLEO */
 
 #cardMotionCore{
     position:absolute;
@@ -880,13 +873,11 @@ background:
         rgba(255,140,0,0) 85%
     );
 
-    filter:blur(12px);
+    filter:blur(16px);
 
     opacity:0;
     pointer-events:none;
 }
-
-/* ACTIVACIÓN */
 
 .cardMotionGlowAnim{
     animation:
@@ -982,8 +973,6 @@ background:
     }
 }
 
-/* GLOW PRINCIPAL */
-
 @keyframes motionGlow{
 
     0%{
@@ -1023,9 +1012,6 @@ background:
     }
 }
 
-
-/* NÚCLEO MÁS RÁPIDO */
-
 @keyframes motionCore{
 
     0%{
@@ -1059,6 +1045,66 @@ background:
 
         opacity:0;
     }
+}
+
+#eventThunderFlash{
+
+    position:absolute;
+
+    top:28px;
+    left:50%;
+
+    transform:translateX(-50%);
+
+    width:293px;
+    height:293px;
+
+    background:rgba(255, 255, 255, 0.66);
+
+    overflow:hidden;
+    pointer-events:none;
+
+    z-index:850;
+
+    opacity:0;
+}
+
+.eventThunderFlashAnim{
+
+    animation:
+        thunderFlash
+        2.4s
+        ease-out
+        forwards;
+
+}
+
+@keyframes thunderFlash{
+
+    0%{
+        opacity:0;
+    }
+
+    8%{
+        opacity:.40;
+    }
+
+    18%{
+        opacity:0.30;
+    }
+
+    38%{
+        opacity:0.20;
+    }
+
+    65%{
+        opacity:0.10;
+    }
+
+    100%{
+        opacity:0;
+    }
+
 }
 
 #gameScale {
@@ -1121,8 +1167,9 @@ READY!?
     <div id="cardMotionCore"></div>
 </div>
 
-
 <div id="eventExplosion"></div>
+
+<div id="eventThunderFlash"></div>
 
 <div id="greenPulse"></div>
 
@@ -1320,6 +1367,7 @@ let maxReduction = 1;
 let cardsPlayed = 0;
 let cardMotionTimer = null;
 let cardMotionStartTimer = null;
+let thunderFlashTimer = null;
 
 const fileInput = document.getElementById("fileInput");
 const importFile = document.getElementById("importFile");
@@ -1496,7 +1544,6 @@ function scaleGame() {
 
     game.style.transform = `scale(${scale})`;
 
-    // Mantener siempre el mismo punto de referencia
     game.style.transformOrigin = "top center";
 }
 
@@ -1551,7 +1598,6 @@ const removedCard = protectedCards[index];
 
 protectedCards.splice(index,1);
 
-// borrar también del deck normal
 cards = cards.filter(card => card !== removedCard);
 
 displayProtectedDeck();
@@ -1645,8 +1691,6 @@ return false;
 
 cardsSinceEvent++;
 
-/* EVITAR DOS EVENTOS SEGUIDOS */
-
 if(lastWasEvent){
 
 lastWasEvent = false;
@@ -1672,8 +1716,6 @@ limit69 ? 7 : 9;
 const maxCards =
 limit69 ? 13 : 15;
 
-/* AJUSTAR MAXIMO SI EL ULTIMO EVENTO FUE EN EL MAXIMO */
-
 let effectiveMax =
 maxCards - maxReduction;
 
@@ -1687,16 +1729,12 @@ effectiveMax--;
 
 let triggerEvent = false;
 
-/* NUNCA ANTES DEL MINIMO */
-
 if(cardsSinceEvent >= minCards){
 
 const roll =
 Math.random() * 100;
 
 let blocked = false;
-
-/* BLOQUEAR MINIMO SEGUIDO */
 
 if(
 cardsSinceEvent === minCards &&
@@ -1705,8 +1743,6 @@ lastEventDistance === minCards
 
 blocked = true;
 }
-
-/* BLOQUEAR MAXIMO SEGUIDO */
 
 if(
 cardsSinceEvent === maxCards &&
@@ -1724,8 +1760,6 @@ roll < chance &&
 triggerEvent = true;
 }
 }
-
-/* FORZAR AL MAXIMO */
 
 if(cardsSinceEvent >= effectiveMax){
 
@@ -1748,12 +1782,11 @@ shuffledEvents[
 currentEventIndex
 ];
 
-cardMotionStartTimer = setTimeout(()=>{
-    cardMotionStartTimer = null;
-    cardMotionGlow();
-},4000);
-
 cardsPlayed++;
+
+    setTimeout(() => {
+        eventThunderFlash();
+    }, 4000);
 
 updateCardsPlayed();
 
@@ -1764,8 +1797,6 @@ generateEventOrb();
 playEventSound();
 
 flashEventExplosion();
-
-/* GUARDAR EN HISTORIAL */
 
 const saveData = {
 
@@ -2237,6 +2268,8 @@ function nextCard(){
 
 stopCardMotion();
 
+stopThunderFlash();
+
 const nextBtn =
 document.getElementById("nextBtn");
 
@@ -2297,8 +2330,6 @@ flashGreenPulse();
 
 playShuffleSound();
 
-/* GUARDAR PRIMERA CARTA */
-
 cardHistory = [];
 
 const firstSave = {
@@ -2335,7 +2366,6 @@ document.getElementById(
 return;
 }
 
-/* SI YA EXISTE HISTORIAL ADELANTE */
 if(historyIndex < cardHistory.length - 1){
 
 historyIndex++;
@@ -2468,8 +2498,6 @@ document.getElementById(
 "memoryBanner"
 ).style.display = "none";
 
-/* GUARDAR HISTORIAL */
-
 const saveData = {
 
 cardIndex: currentCardIndex,
@@ -2524,8 +2552,6 @@ cardHistory[historyIndex];
 currentCardIndex =
 saved.cardIndex;
 
-/* RESTAURAR CARTA */
-
 if(saved.isEvent){
 
 mainCard.src = saved.cardSrc;
@@ -2534,8 +2560,6 @@ mainCard.src = saved.cardSrc;
 
 showCard(currentCardIndex);
 }
-
-/* RESTAURAR ORB LIMPIA */
 
 const orb =
 document.getElementById("randomOrb");
@@ -2562,13 +2586,9 @@ addBox.style.display = "none";
 addBox.style.display = "flex";
 }
 
-/* RESTAURAR NUMERO */
-
 document.getElementById("orbNumber")
 .innerText =
 saved.orbNumber;
-
-/* RESTAURAR CUBOS */
 
 document.getElementById("orbCubes")
 .innerHTML =
@@ -2671,10 +2691,8 @@ function removeCard(index){
 
 const removedCard = cards[index];
 
-// borrar del deck normal
 cards.splice(index,1);
 
-// borrar también de protegidas si existe ahí
 protectedCards =
 protectedCards.filter(
 card => card !== removedCard
@@ -2697,8 +2715,6 @@ function playShuffleSound(){
 
 if(!soundEnabled) return;
 
-/* CREAR AUDIO */
-
 if(!globalAudio){
 
 globalAudio =
@@ -2713,8 +2729,6 @@ const audio = globalAudio;
 audio.resume();
 
 const now = audio.currentTime;
-
-/* MASTER GAIN */
 
 const osc1 =
 audio.createOscillator();
@@ -2752,8 +2766,6 @@ osc1.start();
 
 osc1.stop(audio.currentTime + 1);
 
-/* OSC 2 */
-
 const osc2 =
 audio.createOscillator();
 
@@ -2789,8 +2801,6 @@ gain2.connect(audio.destination);
 osc2.start();
 
 osc2.stop(audio.currentTime + 1);
-
-/* FINAL BEEPS */
 
 for(let i = 0; i < 3; i++){
 
@@ -2845,9 +2855,6 @@ function cardMotionGlow(){
 
     if(!box || !glow || !core) return;
 
-
-    /* PUNTO ALEATORIO */
-
     const randomX =
         Math.random() * box.clientWidth;
 
@@ -2867,9 +2874,6 @@ function cardMotionGlow(){
     core.style.top =
         randomY + "px";
 
-
-    /* REINICIAR ANIMACIONES */
-
     glow.classList.remove(
         "cardMotionGlowAnim"
     );
@@ -2880,9 +2884,6 @@ function cardMotionGlow(){
 
     void glow.offsetWidth;
 
-
-    /* ACTIVAR */
-
     glow.classList.add(
         "cardMotionGlowAnim"
     );
@@ -2890,9 +2891,6 @@ function cardMotionGlow(){
     core.classList.add(
         "cardMotionCoreAnim"
     );
-
-
-    /* SIGUIENTE */
 
 const nextTime =
     6000 +
@@ -2943,6 +2941,53 @@ function stopCardMotion(){
         core.classList.remove("cardMotionCoreAnim");
         core.style.opacity = "0";
     }
+}
+
+function eventThunderFlash(){
+
+    const flash =
+        document.getElementById("eventThunderFlash");
+
+    if(!flash) return;
+
+    flash.classList.remove("eventThunderFlashAnim");
+
+    void flash.offsetWidth;
+
+    flash.classList.add("eventThunderFlashAnim");
+
+    const nextTime =
+        2000 +
+        Math.random() * 12000;
+
+    thunderFlashTimer = setTimeout(
+        eventThunderFlash,
+        nextTime
+    );
+
+}
+
+function stopThunderFlash(){
+
+    const flash =
+        document.getElementById("eventThunderFlash");
+
+    if(thunderFlashTimer){
+
+        clearTimeout(thunderFlashTimer);
+
+        thunderFlashTimer = null;
+
+    }
+
+    if(flash){
+
+        flash.classList.remove("eventThunderFlashAnim");
+
+        flash.style.opacity = "0";
+
+    }
+
 }
 
 function startMatchTimer(){
@@ -3005,8 +3050,6 @@ return;
 
 setTimeout(()=>{
 
-/* SHUFFLE NORMAL */
-
 for(
 let i = cards.length - 1;
 i > 0;
@@ -3021,8 +3064,6 @@ Math.random() * (i + 1)
 [cards[i], cards[j]] =
 [cards[j], cards[i]];
 }
-
-/* EVITAR PROTEGIDAS */
 
 const protectedLimit =
 document.getElementById("eventLimit69").checked
@@ -3061,8 +3102,6 @@ break;
 }
 }
 }
-
-/* EVITAR PROTEGIDAS SEGUIDAS */
 
 let normalCount = 0;
 
@@ -3157,8 +3196,6 @@ break;
 }
 }
 }
-
-/* SHUFFLE EVENTOS */
 
 if(eventCards.length > 1){
 
